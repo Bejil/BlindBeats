@@ -6,8 +6,25 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D418E42B2E87248A00959434 /* SPConfetti in Frameworks */ = {isa = PBXBuildFile; productRef = D418E42A2E87248A00959434 /* SPConfetti */; };
+		D439A64E2E833720001D193A /* NotificationToast in Frameworks */ = {isa = PBXBuildFile; productRef = D439A64D2E833720001D193A /* NotificationToast */; };
+		D4C51D232E71CAE400E2BA7E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = D4C51D222E71CAE400E2BA7E /* SnapKit */; };
+		D4C51E812E72047200E2BA7E /* SwiftySound in Frameworks */ = {isa = PBXBuildFile; productRef = D4C51E802E72047200E2BA7E /* SwiftySound */; };
+		D4C51EAE2E72F29C00E2BA7E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D4C51EAD2E72F29C00E2BA7E /* Alamofire */; };
+		D4C51EB12E72F2A900E2BA7E /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = D4C51EB02E72F2A900E2BA7E /* AlamofireImage */; };
+		D4C51EDB2E74028400E2BA7E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D4C51EDA2E74028400E2BA7E /* FirebaseFirestore */; };
+		D4C51EE32E74054A00E2BA7E /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = D4C51EE22E74054A00E2BA7E /* FirebaseAnalytics */; };
+		D4C51EEB2E74141200E2BA7E /* SVGKit in Frameworks */ = {isa = PBXBuildFile; productRef = D4C51EEA2E74141200E2BA7E /* SVGKit */; };
+		D4CEC0AF2E93A87C000E0D1E /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = D4CEC0AE2E93A87C000E0D1E /* FirebaseRemoteConfig */; };
+		D4CEC2AB2E93D317000E0D1E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4CEC2AA2E93D317000E0D1E /* StoreKit.framework */; };
+		D4CEC4AD2E951072000E0D1E /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = D4CEC4AC2E951072000E0D1E /* GoogleMobileAds */; };
+		D4CEC4B02E9510B8000E0D1E /* GoogleUserMessagingPlatform in Frameworks */ = {isa = PBXBuildFile; productRef = D4CEC4AF2E9510B8000E0D1E /* GoogleUserMessagingPlatform */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		D4875BE62E71C496007B256E /* BlindBeats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlindBeats.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4CEC2AA2E93D317000E0D1E /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -36,6 +53,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4CEC4AD2E951072000E0D1E /* GoogleMobileAds in Frameworks */,
+				D4C51EAE2E72F29C00E2BA7E /* Alamofire in Frameworks */,
+				D418E42B2E87248A00959434 /* SPConfetti in Frameworks */,
+				D4CEC4B02E9510B8000E0D1E /* GoogleUserMessagingPlatform in Frameworks */,
+				D4C51EEB2E74141200E2BA7E /* SVGKit in Frameworks */,
+				D4C51EB12E72F2A900E2BA7E /* AlamofireImage in Frameworks */,
+				D439A64E2E833720001D193A /* NotificationToast in Frameworks */,
+				D4C51EE32E74054A00E2BA7E /* FirebaseAnalytics in Frameworks */,
+				D4C51E812E72047200E2BA7E /* SwiftySound in Frameworks */,
+				D4C51EDB2E74028400E2BA7E /* FirebaseFirestore in Frameworks */,
+				D4C51D232E71CAE400E2BA7E /* SnapKit in Frameworks */,
+				D4CEC0AF2E93A87C000E0D1E /* FirebaseRemoteConfig in Frameworks */,
+				D4CEC2AB2E93D317000E0D1E /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				D4875BE82E71C496007B256E /* BlindBeats */,
+				D4CEC2A92E93D317000E0D1E /* Frameworks */,
 				D4875BE72E71C496007B256E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,6 +87,14 @@
 				D4875BE62E71C496007B256E /* BlindBeats.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D4CEC2A92E93D317000E0D1E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D4CEC2AA2E93D317000E0D1E /* StoreKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -78,6 +117,18 @@
 			);
 			name = BlindBeats;
 			packageProductDependencies = (
+				D4C51D222E71CAE400E2BA7E /* SnapKit */,
+				D4C51E802E72047200E2BA7E /* SwiftySound */,
+				D4C51EAD2E72F29C00E2BA7E /* Alamofire */,
+				D4C51EB02E72F2A900E2BA7E /* AlamofireImage */,
+				D4C51EDA2E74028400E2BA7E /* FirebaseFirestore */,
+				D4C51EE22E74054A00E2BA7E /* FirebaseAnalytics */,
+				D4C51EEA2E74141200E2BA7E /* SVGKit */,
+				D439A64D2E833720001D193A /* NotificationToast */,
+				D418E42A2E87248A00959434 /* SPConfetti */,
+				D4CEC0AE2E93A87C000E0D1E /* FirebaseRemoteConfig */,
+				D4CEC4AC2E951072000E0D1E /* GoogleMobileAds */,
+				D4CEC4AF2E9510B8000E0D1E /* GoogleUserMessagingPlatform */,
 			);
 			productName = BlindBeats;
 			productReference = D4875BE62E71C496007B256E /* BlindBeats.app */;
@@ -107,6 +158,18 @@
 			);
 			mainGroup = D4875BDD2E71C496007B256E;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D4C51D212E71CAE400E2BA7E /* XCRemoteSwiftPackageReference "SnapKit" */,
+				D4C51E7F2E72047200E2BA7E /* XCRemoteSwiftPackageReference "SwiftySound" */,
+				D4C51EAC2E72F29C00E2BA7E /* XCRemoteSwiftPackageReference "Alamofire" */,
+				D4C51EAF2E72F2A900E2BA7E /* XCRemoteSwiftPackageReference "AlamofireImage" */,
+				D4C51ED92E74028400E2BA7E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				D4C51EE92E74141200E2BA7E /* XCRemoteSwiftPackageReference "SVGKit" */,
+				D439A64C2E833720001D193A /* XCRemoteSwiftPackageReference "NotificationToast" */,
+				D418E4292E87248A00959434 /* XCRemoteSwiftPackageReference "SPConfetti" */,
+				D4CEC4AB2E951072000E0D1E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				D4CEC4AE2E9510B8000E0D1E /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D4875BE72E71C496007B256E /* Products */;
 			projectDirPath = "";
@@ -337,6 +400,152 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D418E4292E87248A00959434 /* XCRemoteSwiftPackageReference "SPConfetti" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ivanvorobei/SPConfetti";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.2;
+			};
+		};
+		D439A64C2E833720001D193A /* XCRemoteSwiftPackageReference "NotificationToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PhilippeWeidmann/NotificationToast";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
+		D4C51D212E71CAE400E2BA7E /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		D4C51E7F2E72047200E2BA7E /* XCRemoteSwiftPackageReference "SwiftySound" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/adamcichy/SwiftySound.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
+		D4C51EAC2E72F29C00E2BA7E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		D4C51EAF2E72F2A900E2BA7E /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/AlamofireImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.3.0;
+			};
+		};
+		D4C51ED92E74028400E2BA7E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.2.0;
+			};
+		};
+		D4C51EE92E74141200E2BA7E /* XCRemoteSwiftPackageReference "SVGKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SVGKit/SVGKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		D4CEC4AB2E951072000E0D1E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.12.0;
+			};
+		};
+		D4CEC4AE2E9510B8000E0D1E /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D418E42A2E87248A00959434 /* SPConfetti */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D418E4292E87248A00959434 /* XCRemoteSwiftPackageReference "SPConfetti" */;
+			productName = SPConfetti;
+		};
+		D439A64D2E833720001D193A /* NotificationToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D439A64C2E833720001D193A /* XCRemoteSwiftPackageReference "NotificationToast" */;
+			productName = NotificationToast;
+		};
+		D4C51D222E71CAE400E2BA7E /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4C51D212E71CAE400E2BA7E /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		D4C51E802E72047200E2BA7E /* SwiftySound */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4C51E7F2E72047200E2BA7E /* XCRemoteSwiftPackageReference "SwiftySound" */;
+			productName = SwiftySound;
+		};
+		D4C51EAD2E72F29C00E2BA7E /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4C51EAC2E72F29C00E2BA7E /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		D4C51EB02E72F2A900E2BA7E /* AlamofireImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4C51EAF2E72F2A900E2BA7E /* XCRemoteSwiftPackageReference "AlamofireImage" */;
+			productName = AlamofireImage;
+		};
+		D4C51EDA2E74028400E2BA7E /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4C51ED92E74028400E2BA7E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		D4C51EE22E74054A00E2BA7E /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4C51ED92E74028400E2BA7E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		D4C51EEA2E74141200E2BA7E /* SVGKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4C51EE92E74141200E2BA7E /* XCRemoteSwiftPackageReference "SVGKit" */;
+			productName = SVGKit;
+		};
+		D4CEC0AE2E93A87C000E0D1E /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4C51ED92E74028400E2BA7E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+		D4CEC4AC2E951072000E0D1E /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4CEC4AB2E951072000E0D1E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+		D4CEC4AF2E9510B8000E0D1E /* GoogleUserMessagingPlatform */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4CEC4AE2E9510B8000E0D1E /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */;
+			productName = GoogleUserMessagingPlatform;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D4875BDE2E71C496007B256E /* Project object */;
 }
