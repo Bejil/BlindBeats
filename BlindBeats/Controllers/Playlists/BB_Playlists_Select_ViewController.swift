@@ -75,7 +75,7 @@ public class BB_Playlists_Select_ViewController : BB_Playlists_ViewController {
 		$0.setCustomSpacing(0, after: searchTextField)
 		return $0
 		
-	}(UIStackView(arrangedSubviews: [segmentedControl,searchTextField,tableView]))
+	}(UIStackView(arrangedSubviews: [segmentedControl,searchTextField,tableView,bannerView]))
 	
 	public override func loadView() {
 		
@@ -111,16 +111,28 @@ extension BB_Playlists_Select_ViewController {
 	public func numberOfSections(in tableView: UITableView) -> Int {
 		
 		var sections = 0
-		if !(playlists?.notCompleted.isEmpty ?? true) { sections += 1 }
-		if !(playlists?.completed.isEmpty ?? true) { sections += 1 }
+		
+		if !(playlists?.notCompleted.isEmpty ?? true) {
+			
+			sections += 1
+		}
+		
+		if !(playlists?.completed.isEmpty ?? true) {
+			
+			sections += 1
+		}
+		
 		return sections
 	}
 	
 	public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		
 		if section == 0 && !(playlists?.notCompleted.isEmpty ?? true) {
+			
 			return playlists?.notCompleted.count ?? 0
-		} else if (section == 1 && !(playlists?.completed.isEmpty ?? true)) || (section == 0 && (playlists?.notCompleted.isEmpty ?? true) && !(playlists?.completed.isEmpty ?? true)) {
+		}
+		else if (section == 1 && !(playlists?.completed.isEmpty ?? true)) || (section == 0 && (playlists?.notCompleted.isEmpty ?? true) && !(playlists?.completed.isEmpty ?? true)) {
+			
 			return playlists?.completed.count ?? 0
 		}
 		return 0
@@ -162,16 +174,21 @@ extension BB_Playlists_Select_ViewController {
 		let cell = tableView.dequeueReusableCell(withIdentifier: BB_Playlist_TableViewCell.identifier, for: indexPath) as! BB_Playlist_TableViewCell
 		
 		let playlist: BB_Playlist?
+		
 		if indexPath.section == 0 && !(playlists?.notCompleted.isEmpty ?? true) {
+			
 			playlist = playlists?.notCompleted[indexPath.row]
-		} else if (indexPath.section == 1 && !(playlists?.completed.isEmpty ?? true)) || (indexPath.section == 0 && (playlists?.notCompleted.isEmpty ?? true) && !(playlists?.completed.isEmpty ?? true)) {
+		}
+		else if (indexPath.section == 1 && !(playlists?.completed.isEmpty ?? true)) || (indexPath.section == 0 && (playlists?.notCompleted.isEmpty ?? true) && !(playlists?.completed.isEmpty ?? true)) {
+			
 			playlist = playlists?.completed[indexPath.row]
-		} else {
+		}
+		else {
+			
 			playlist = nil
 		}
 		
 		cell.playlist = playlist
-		cell.isEnabled = false
 		return cell
 	}
 	
@@ -182,10 +199,15 @@ extension BB_Playlists_Select_ViewController {
 		let selectedPlaylist: BB_Playlist?
 		
 		if indexPath.section == 0 && !(playlists?.notCompleted.isEmpty ?? true) {
+			
 			selectedPlaylist = playlists?.notCompleted[indexPath.row]
-		} else if (indexPath.section == 1 && !(playlists?.completed.isEmpty ?? true)) || (indexPath.section == 0 && (playlists?.notCompleted.isEmpty ?? true) && !(playlists?.completed.isEmpty ?? true)) {
+		}
+		else if (indexPath.section == 1 && !(playlists?.completed.isEmpty ?? true)) || (indexPath.section == 0 && (playlists?.notCompleted.isEmpty ?? true) && !(playlists?.completed.isEmpty ?? true)) {
+			
 			selectedPlaylist = playlists?.completed[indexPath.row]
-		} else {
+		}
+		else {
+			
 			selectedPlaylist = nil
 		}
 		

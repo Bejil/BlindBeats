@@ -106,8 +106,7 @@ extension UIView {
 		
 		placeholderView.snp.makeConstraints { make in
 			
-			make.top.right.left.equalTo(view.safeAreaLayoutGuide)
-			make.bottom.equalTo(view.keyboardLayoutGuide.snp.top)
+			make.edges.equalTo(view.safeAreaLayoutGuide)
 		}
 		
 		return placeholderView

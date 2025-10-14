@@ -19,7 +19,7 @@ public class BB_ViewController : UIViewController {
 				navigationItem.leftBarButtonItem = .init(image: UIImage(systemName: "xmark.circle.fill"), primaryAction: .init(handler: { [weak self] _ in
 					
 					UIApplication.feedBack(.Off)
-					BB_Audio.shared.play(.button)
+					BB_Sound.shared.playSound(.Button)
 					
 					self?.close()
 				}))
@@ -97,7 +97,7 @@ public class BB_ViewController : UIViewController {
 					view.removeFromSuperview()
 				}
 				
-				BB_Audio.shared.play(.tap)
+				BB_Sound.shared.playSound(.Tap)
 			}
 		}
 		tapGestureRecognizer.cancelsTouchesInView = false

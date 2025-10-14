@@ -8,6 +8,7 @@
 import UIKit
 import StoreKit
 import MusicKit
+import GoogleMobileAds
 
 public class BB_Playlists_ViewController : BB_ViewController {
 	
@@ -27,7 +28,7 @@ public class BB_Playlists_ViewController : BB_ViewController {
 			navigationItem.rightBarButtonItem = hasPlaylists ? .init(title: String(key: "playlists.edit.button"), primaryAction: .init(handler: { [weak self] _ in
 				
 				UIApplication.feedBack(.On)
-				BB_Audio.shared.play(.button)
+				BB_Sound.shared.playSound(.Button)
 				
 				let isEditing = self?.tableView.isEditing ?? false
 				self?.tableView.setEditing(!isEditing, animated: true)
@@ -66,6 +67,7 @@ public class BB_Playlists_ViewController : BB_ViewController {
 		return $0
 		
 	}(BB_TableView())
+	public lazy var bannerView = BB_Ads.shared.presentBanner(BB_Ads.Identifiers.Banner.Playlists, self)
 	private lazy var createButton:BB_Button = {
 		
 		$0.isHidden = true
@@ -82,7 +84,7 @@ public class BB_Playlists_ViewController : BB_ViewController {
 		$0.spacing = UI.Margins
 		return $0
 		
-	}(UIStackView(arrangedSubviews: [tableView,createButton]))
+	}(UIStackView(arrangedSubviews: [tableView,bannerView,createButton]))
 	
 	public override func loadView() {
 		
@@ -107,7 +109,7 @@ public class BB_Playlists_ViewController : BB_ViewController {
 			
 			if status != .authorized {
 				
-				let alertController:BB_Alert_ViewController = .present(BB_Error(String(key: "Vous devez autoriser l'accès à Apple Music dans vos règlages")))
+				let alertController:BB_Alert_ViewController = .present(BB_Error(String(key: "playlists.auth.error")))
 				alertController.backgroundView.isUserInteractionEnabled = false
 				alertController.dismissHandler = {
 					
@@ -115,13 +117,15 @@ public class BB_Playlists_ViewController : BB_ViewController {
 				}
 			}
 		}
+		
+		updatePlaylists()
 	}
 	
 	public override func viewWillAppear(_ animated: Bool) {
 		
 		super.viewWillAppear(animated)
 		
-		updatePlaylists()
+		bannerView.refresh()
 	}
 	
 	public func updatePlaylists() {

@@ -15,11 +15,11 @@ public class BB_Playlist_Alert_Name_ViewController : BB_Alert_ViewController {
 		didSet {
 			
 			textField.text = playlist?.title
+			textField.placeholder = playlist?.placeholder ?? String(key: "playlists.edit.title.alert.placeholder.0")
 		}
 	}
 	private lazy var textField:BB_TextField = {
 		
-		$0.placeholder = String(key: "playlists.edit.title.alert.placeholder")
 		$0.returnKeyType = .send
 		return $0
 		
@@ -32,10 +32,16 @@ public class BB_Playlist_Alert_Name_ViewController : BB_Alert_ViewController {
 		title = String(key: "playlists.edit.title.alert.title")
 		add(String(key: "playlists.edit.title.alert.label"))
 		add(textField)
-		
-		let button = addButton(title: String(key: "playlists.edit.title.alert.button")) { [weak self] button in
+		addButton(title: String(key: "playlists.edit.title.alert.button")) { [weak self] button in
 			
-			self?.playlist?.title = self?.textField.text ?? ""
+			if let text = self?.textField.text, !text.isEmpty {
+				
+				self?.playlist?.title = text
+			}
+			else {
+				
+				self?.playlist?.title = self?.textField.placeholder
+			}
 			
 			button?.isLoading = true
 			
@@ -63,14 +69,6 @@ public class BB_Playlist_Alert_Name_ViewController : BB_Alert_ViewController {
 				}
 			}
 		}
-		button.isEnabled = false
-		
-		textField.addAction(.init(handler: { [weak self] _ in
-			
-			button.isEnabled = !(self?.textField.text?.isEmpty ?? true)
-			
-		}), for: .editingChanged)
-		
 		addCancelButton()
 	}
 	

@@ -40,19 +40,22 @@ extension BB_Playlist {
 		public var color: UIColor {
 			
 			switch self {
-			case .veryEasy: return .systemGreen
-			case .easy: return .systemBlue
-			case .medium: return .systemYellow
-			case .hard: return .systemOrange
-			case .veryHard: return .systemRed
-			case .unknown: return Colors.Content.Text.withAlphaComponent(0.5)
+			case .veryEasy: return Colors.Playlist.VeryEasy
+			case .easy: return Colors.Playlist.Easy
+			case .medium: return Colors.Playlist.Medium
+			case .hard: return Colors.Playlist.Hard
+			case .veryHard: return Colors.Playlist.VeryHard
+			case .unknown: return Colors.Playlist.Unknown
 			}
 		}
 	}
 	
 	public var difficulty: Difficulty {
 		
-		guard attemps >= 5 else { return .unknown }
+		if attemps == 0 {
+			
+			return .unknown
+		}
 		
 		let successRate = Double(success) / Double(attemps)
 		let failureRate = Double(failures) / Double(attemps)
@@ -151,5 +154,50 @@ extension BB_Playlist {
 			
 			completion?(error)
 		})
+	}
+	
+	public var placeholder:String? {
+		
+		let genres = songs.compactMap { $0.genre }.filter { !$0.isEmpty }
+		let genreCounts = Dictionary(grouping: genres, by: { $0 })
+			.mapValues { $0.count }
+			.sorted { $0.value > $1.value }
+		
+		if !genreCounts.isEmpty {
+			
+			let totalSongs = genreCounts.reduce(0) { $0 + $1.value }
+			let mostCommonGenre = genreCounts[0]
+			let mostCommonPercentage = Double(mostCommonGenre.value) / Double(totalSongs) * 100
+			
+			if mostCommonPercentage >= 60 {
+				
+				return String(key: "playlists.edit.title.alert.placeholder.1") + "\(mostCommonGenre.key)"
+			}
+			
+			if genreCounts.count >= 2 {
+				
+				let topTwoPercentage = Double(mostCommonGenre.value + genreCounts[1].value) / Double(totalSongs) * 100
+				
+				if topTwoPercentage >= 80 {
+					
+					return "\(mostCommonGenre.key) & \(genreCounts[1].key)"
+				}
+			}
+			
+			if genreCounts.count >= 3 {
+				
+				let topThree = genreCounts.prefix(3).map { $0.key }
+				return String(key: "playlists.edit.title.alert.placeholder.2") + "\(topThree.joined(separator: ", "))"
+			}
+			
+			if genreCounts.count == 2 {
+				
+				return "\(mostCommonGenre.key) & \(genreCounts[1].key)"
+			}
+			
+			return String(key: "playlists.edit.title.alert.placeholder.1") + "\(mostCommonGenre.key)"
+		}
+		
+		return nil
 	}
 }

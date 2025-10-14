@@ -15,7 +15,7 @@ public class BB_ProgressView : UIProgressView {
 		
 		progressViewStyle = .bar
 		progressTintColor = Colors.Tertiary
-		trackTintColor = .white
+		trackTintColor = .white.withAlphaComponent(0.5)
 	}
 	
 	required init?(coder: NSCoder) {

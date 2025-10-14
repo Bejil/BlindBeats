@@ -21,4 +21,10 @@ public class BB_User : Equatable, Codable {
 	public var points:Int = 0
 	public var completedPlaylists:[String] = .init()
 	public var diamonds:Int = BB_Firebase.shared.getRemoteConfig(.DiamondsUserDefault).numberValue.intValue
+	public var attemps:Int = 0
+	public var success:Int = 0
+	public var failures:Int = 0
+	public var lastConnectionDate: Date = .init()
+	public var lastGameDate:Date?
+	public var lastDailyGameRewardDate:Date?
 }

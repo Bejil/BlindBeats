@@ -180,9 +180,11 @@ public class BB_Button : UIButton {
 		
 		// Action du bouton
 		addAction(.init(handler: { [weak self] _ in
+			
 			UIApplication.feedBack(.On)
-			BB_Audio.shared.play(.button)
+			BB_Sound.shared.playSound(.Button)
 			self?.action?(self)
+			
 		}), for: .touchUpInside)
 		
 		// Appliquer l'apparence initiale
@@ -401,7 +403,7 @@ public class BB_Button : UIButton {
 		case .tertiary:
 			return Colors.Button.Tertiary.Background
 		case .navigation:
-			return Colors.Button.Navigation.Background
+			return .clear
 		case .delete:
 			return Colors.Button.Delete.Background
 		}
@@ -416,7 +418,7 @@ public class BB_Button : UIButton {
 		case .tertiary:
 			return Colors.Button.Tertiary.Content
 		case .navigation:
-			return Colors.Button.Navigation.Content
+			return Colors.Navigation.Button
 		case .delete:
 			return Colors.Button.Delete.Content
 		}

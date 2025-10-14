@@ -19,11 +19,12 @@ public class BB_Playlist_TableViewCell : BB_TableViewCell {
 			
 			titleLabel.text = playlist?.title
 			
-			difficultyLabel.backgroundColor = playlist?.difficulty.color
+			difficultyStackView.backgroundColor = playlist?.difficulty.color
 			difficultyLabel.text = String(key: "playlists.difficulty." + (playlist?.difficulty.rawValue ?? BB_Playlist.Difficulty.unknown.rawValue))
 			
+			tagsView.clearTags()
 			tagsView.isHidden = playlist?.user != BB_User.current
-			tagsView.addTag("\(playlist?.songs.count ?? 0) chansons", backgroundColor: Colors.Primary)
+			tagsView.addTag("\(playlist?.songs.count ?? 0) " + String(key: "playlists.songs"), backgroundColor: Colors.Primary)
 			let genres = playlist?.songs.compactMap({ $0.genre })
 			genres?.prefix(5).forEach({
 				
@@ -51,14 +52,44 @@ public class BB_Playlist_TableViewCell : BB_TableViewCell {
 		return $0
 		
 	}(BB_Label())
-	private lazy var difficultyLabel:BB_Label = {
+	private lazy var difficultyStackView:UIStackView = {
 		
 		$0.layer.cornerRadius = UI.Margins/2
-		$0.contentInsets = .init(horizontal: UI.Margins/5, vertical: UI.Margins/7)
-		$0.textAlignment = .center
+		$0.isLayoutMarginsRelativeArrangement = true
+		$0.layoutMargins = .init(horizontal: UI.Margins/2, vertical: UI.Margins/5)
+		$0.axis = .horizontal
+		$0.spacing = UI.Margins/3
+		$0.alignment = .center
+		
+		let button:UIButton = .init()
+		button.setImage(UIImage(systemName: "info.circle.fill"), for: .normal)
+		button.tintColor = .white
+		button.isUserInteractionEnabled = false
+		button.snp.makeConstraints { make in
+			make.size.equalTo(UI.Margins)
+		}
+		$0.addArrangedSubview(button)
+		
+		$0.addGestureRecognizer(UITapGestureRecognizer(block: { [weak self] _ in
+			
+			UIApplication.feedBack(.On)
+			BB_Sound.shared.playSound(.Button)
+			
+			let alertController:BB_Playlist_Stats_AlertViewController = .init()
+			alertController.playlist = self?.playlist
+			alertController.present()
+			
+		}))
+		
+		return $0
+		
+	}(UIStackView(arrangedSubviews: [difficultyLabel]))
+	private lazy var difficultyLabel:BB_Label = {
+		
+		$0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+		$0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 		$0.textColor = .white
 		$0.font = Fonts.Content.Text.Bold.withSize(Fonts.Size-4)
-		$0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 		return $0
 		
 	}(BB_Label())
@@ -130,24 +161,6 @@ public class BB_Playlist_TableViewCell : BB_TableViewCell {
 			return actionsConfiguration
 		}
 	}
-	private lazy var infoImageView:BB_ImageView = {
-		
-		$0.tintColor = Colors.Tertiary
-		$0.isHidden = !isEnabled
-		$0.contentMode = .scaleAspectFit
-		$0.snp.makeConstraints { make in
-			make.size.equalTo(1.5*UI.Margins)
-		}
-		return $0
-		
-	}(BB_ImageView(image: UIImage(systemName: "info.circle")))
-	public var isEnabled: Bool = true {
-		
-		didSet {
-			
-			infoImageView.isHidden = !isEnabled
-		}
-	}
 	
 	public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		
@@ -162,7 +175,7 @@ public class BB_Playlist_TableViewCell : BB_TableViewCell {
 			make.left.right.equalToSuperview()
 		}
 		
-		let titleStackView:UIStackView = .init(arrangedSubviews: [titleLabel,difficultyLabel])
+		let titleStackView:UIStackView = .init(arrangedSubviews: [titleLabel,difficultyStackView])
 		titleStackView.axis = .horizontal
 		titleStackView.spacing = UI.Margins
 		titleStackView.setCustomSpacing(UI.Margins/2, after: difficultyLabel)
@@ -174,14 +187,9 @@ public class BB_Playlist_TableViewCell : BB_TableViewCell {
 		
 		let contentStackView:UIStackView = .init(arrangedSubviews: [headStackView,tagsView])
 		contentStackView.axis = .vertical
-		contentStackView.spacing = 3*UI.Margins/4
-		
-		let stackView:UIStackView = .init(arrangedSubviews: [contentStackView,infoImageView])
-		stackView.axis = .horizontal
-		stackView.spacing = UI.Margins
-		stackView.alignment = .center
-		backgroundVisualEffectView.contentView.addSubview(stackView)
-		stackView.snp.makeConstraints { make in
+		contentStackView.spacing = UI.Margins/2
+		backgroundVisualEffectView.contentView.addSubview(contentStackView)
+		contentStackView.snp.makeConstraints { make in
 			make.edges.equalToSuperview().inset(UI.Margins)
 		}
 	}

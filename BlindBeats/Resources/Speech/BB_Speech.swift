@@ -57,6 +57,11 @@ public class BB_Speech {
 		recognitionRequest?.endAudio()
 		recognitionRequest = nil
 		
+		// Restaurer la session audio pour la lecture
+		let audioSession = AVAudioSession.sharedInstance()
+		try? audioSession.setCategory(.playback)
+		try? audioSession.setActive(true)
+		
 		// Arrêter le timer et retourner le dernier texte reconnu
 		pauseTimer?.invalidate()
 		pauseTimer = nil
@@ -75,7 +80,7 @@ public class BB_Speech {
 		recognitionTask = nil
 		
 		let audioSession = AVAudioSession.sharedInstance()
-		try? audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
+		try? audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.duckOthers, .allowBluetoothHFP, .defaultToSpeaker])
 		try? audioSession.setActive(true, options: .notifyOthersOnDeactivation)
 		
 		recognitionRequest = SFSpeechAudioBufferRecognitionRequest()

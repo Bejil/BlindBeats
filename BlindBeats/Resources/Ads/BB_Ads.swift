@@ -15,11 +15,21 @@ public class BB_Ads : NSObject {
 		public struct FullScreen {
 			
 			static let AppOpening:String = "ca-app-pub-9540216894729209/4530883007"
+			
+			public struct Game {
+				
+				public struct Solo {
+					
+					static let Start:String = "ca-app-pub-9540216894729209/6315588020"
+					static let End:String = "ca-app-pub-9540216894729209/4615477638"
+				}
+			}
 		}
 		
 		public struct Banner {
 			
-			static let Menu:String = "ca-app-pub-9540216894729209/9894890323"
+			static let Home:String = "ca-app-pub-9540216894729209/9894890323"
+			static let Playlists:String = "ca-app-pub-9540216894729209/2823776018"
 		}
 	}
 	
@@ -37,15 +47,20 @@ public class BB_Ads : NSObject {
 	
 	public var shouldDisplayAd:Bool {
 		
-		return (UserDefaults.get(.shouldDisplayAds) as? Bool ?? true) && BB_CMP.shared.isConsentObtained
+		return (UserDefaults.get(.shouldDisplayAds) as? Bool ?? true) && BB_CMP.shared.isConsentObtained && !UIApplication.isDebug
 	}
 	
 	public func start() {
 		
+		if UIApplication.isDebug {
+			
+			MobileAds.shared.requestConfiguration.testDeviceIdentifiers = [ "1f2555cdf1d612b496f90d12141ab12d" ]
+		}
+		
 		MobileAds.shared.start(completionHandler: nil)
 	}
 	
-	public func presentAppOpening(_ dismissCompletion:(()->Void)?) {
+	public func presentAppOpening(_ dismissCompletion:(()->Void)? = nil) {
 		
 		if shouldDisplayAd {
 			
@@ -64,7 +79,7 @@ public class BB_Ads : NSObject {
 		}
 	}
 	
-	public func presentInterstitial(_ identifier:String, _ presentCompletion:(()->Void)?, _ dismissCompletion:(()->Void)?) {
+	public func presentInterstitial(_ identifier:String, _ presentCompletion:(()->Void)? = nil, _ dismissCompletion:(()->Void)? = nil) {
 		
 		if shouldDisplayAd {
 			
@@ -179,6 +194,11 @@ extension BB_Ads : FullScreenContentDelegate {
 			rewardedAd = nil
 			rewardedAdCompletion = nil
 			rewardedAdReward = nil
+		}
+		else if ad is AppOpenAd {
+			
+			appOpeningDismissCompletion?()
+			appOpeningDismissCompletion = nil
 		}
 	}
 }

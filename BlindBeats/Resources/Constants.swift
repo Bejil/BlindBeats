@@ -7,30 +7,6 @@
 
 import UIKit
 
-public struct Playlists {
-	
-	public static let MaxSongsCount:Int = 10
-}
-
-public struct Points {
-	
-	public static let CompletedFactor:Int = 10
-	public static let Perfect:Int = 150
-	public static let Artist:Int = 60
-	public static let Title:Int = 60
-	public static let Help:Int = 50
-}
-
-public struct Diamonds {
-	
-	public static let Default:Int = 5
-	
-	public struct Game {
-		
-		public static let Solo:Int = 1
-	}
-}
-
 public struct UI {
 	
 	static var MainController :UIViewController {
@@ -98,12 +74,24 @@ public struct Colors {
 			public static let Background:UIColor = UIColor(named: "ButtonDeleteBackground")!
 			public static let Content:UIColor = UIColor(named: "ButtonDeleteContent")!
 		}
+	}
+	
+	public struct Playlist {
 		
-		public struct Navigation {
-			
-			public static let Background:UIColor = UIColor(named: "ButtonTextBackground")!
-			public static let Content:UIColor = UIColor(named: "ButtonTextContent")!
-		}
+		public static let VeryEasy:UIColor = UIColor(named: "PlaylistVeryEasy")!
+		public static let Easy:UIColor = UIColor(named: "PlaylistEasy")!
+		public static let Medium:UIColor = UIColor(named: "PlaylistMedium")!
+		public static let Hard:UIColor = UIColor(named: "PlaylistHard")!
+		public static let VeryHard:UIColor = UIColor(named: "PlaylistVeryHard")!
+		public static let Unknown:UIColor = UIColor(named: "PlaylistUnknown")!
+	}
+	
+	public struct Toast {
+		
+		public static let Success:UIColor = UIColor(named: "ToastSuccess")!
+		public static let Warning:UIColor = UIColor(named: "ToastWarning")!
+		public static let Failure:UIColor = UIColor(named: "ToastFailure")!
+		public static let Info:UIColor = UIColor(named: "ToastInfo")!
 	}
 }
 

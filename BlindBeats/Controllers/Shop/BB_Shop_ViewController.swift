@@ -45,13 +45,14 @@ public class BB_Shop_ViewController : BB_ViewController {
 		title = String(key: "shop.title")
 		
 		let restoreTitleLabel:BB_Label = .init(String(key: "shop.restore.title"))
-		restoreTitleLabel.font = Fonts.Content.Title.H4
+		restoreTitleLabel.font = Fonts.Content.Title.H4.withSize(Fonts.Content.Title.H4.pointSize-2)
 		restoreTitleLabel.textColor = .white
 		restoreTitleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
 		restoreTitleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 		
 		let restoreLabel:BB_Label = .init(String(key: "shop.restore.subtitle"))
 		restoreLabel.textColor = .white
+		restoreLabel.font = Fonts.Content.Text.Regular.withSize(Fonts.Size-2)
 		
 		let restoreContentStackView:UIStackView = .init(arrangedSubviews: [restoreTitleLabel,restoreLabel])
 		restoreContentStackView.axis = .vertical
@@ -76,6 +77,9 @@ public class BB_Shop_ViewController : BB_ViewController {
 						
 						UserDefaults.set(false, .shouldDisplayAds)
 						NotificationCenter.post(.updateAds)
+						
+						UIApplication.feedBack(.Success)
+						BB_Sound.shared.playSound(.Success)
 						
 						let alertController = BB_Alert_ViewController()
 						alertController.title = String(key: "shop.restore.success.alert.title")
@@ -176,6 +180,9 @@ extension BB_Shop_ViewController : UITableViewDelegate, UITableViewDataSource {
 									else {
 										
 										NotificationCenter.post(.updateUser)
+										
+										UIApplication.feedBack(.Success)
+										BB_Sound.shared.playSound(.Success)
 										
 										let alertController:BB_Alert_ViewController = .init()
 										alertController.title = String(key: "shop.success.alert.title")

@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D418E42B2E87248A00959434 /* SPConfetti in Frameworks */ = {isa = PBXBuildFile; productRef = D418E42A2E87248A00959434 /* SPConfetti */; };
-		D439A64E2E833720001D193A /* NotificationToast in Frameworks */ = {isa = PBXBuildFile; productRef = D439A64D2E833720001D193A /* NotificationToast */; };
 		D4C51D232E71CAE400E2BA7E /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = D4C51D222E71CAE400E2BA7E /* SnapKit */; };
-		D4C51E812E72047200E2BA7E /* SwiftySound in Frameworks */ = {isa = PBXBuildFile; productRef = D4C51E802E72047200E2BA7E /* SwiftySound */; };
 		D4C51EAE2E72F29C00E2BA7E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = D4C51EAD2E72F29C00E2BA7E /* Alamofire */; };
 		D4C51EB12E72F2A900E2BA7E /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = D4C51EB02E72F2A900E2BA7E /* AlamofireImage */; };
 		D4C51EDB2E74028400E2BA7E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D4C51EDA2E74028400E2BA7E /* FirebaseFirestore */; };
@@ -59,9 +57,7 @@
 				D4CEC4B02E9510B8000E0D1E /* GoogleUserMessagingPlatform in Frameworks */,
 				D4C51EEB2E74141200E2BA7E /* SVGKit in Frameworks */,
 				D4C51EB12E72F2A900E2BA7E /* AlamofireImage in Frameworks */,
-				D439A64E2E833720001D193A /* NotificationToast in Frameworks */,
 				D4C51EE32E74054A00E2BA7E /* FirebaseAnalytics in Frameworks */,
-				D4C51E812E72047200E2BA7E /* SwiftySound in Frameworks */,
 				D4C51EDB2E74028400E2BA7E /* FirebaseFirestore in Frameworks */,
 				D4C51D232E71CAE400E2BA7E /* SnapKit in Frameworks */,
 				D4CEC0AF2E93A87C000E0D1E /* FirebaseRemoteConfig in Frameworks */,
@@ -118,13 +114,11 @@
 			name = BlindBeats;
 			packageProductDependencies = (
 				D4C51D222E71CAE400E2BA7E /* SnapKit */,
-				D4C51E802E72047200E2BA7E /* SwiftySound */,
 				D4C51EAD2E72F29C00E2BA7E /* Alamofire */,
 				D4C51EB02E72F2A900E2BA7E /* AlamofireImage */,
 				D4C51EDA2E74028400E2BA7E /* FirebaseFirestore */,
 				D4C51EE22E74054A00E2BA7E /* FirebaseAnalytics */,
 				D4C51EEA2E74141200E2BA7E /* SVGKit */,
-				D439A64D2E833720001D193A /* NotificationToast */,
 				D418E42A2E87248A00959434 /* SPConfetti */,
 				D4CEC0AE2E93A87C000E0D1E /* FirebaseRemoteConfig */,
 				D4CEC4AC2E951072000E0D1E /* GoogleMobileAds */,
@@ -160,12 +154,10 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				D4C51D212E71CAE400E2BA7E /* XCRemoteSwiftPackageReference "SnapKit" */,
-				D4C51E7F2E72047200E2BA7E /* XCRemoteSwiftPackageReference "SwiftySound" */,
 				D4C51EAC2E72F29C00E2BA7E /* XCRemoteSwiftPackageReference "Alamofire" */,
 				D4C51EAF2E72F2A900E2BA7E /* XCRemoteSwiftPackageReference "AlamofireImage" */,
 				D4C51ED92E74028400E2BA7E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				D4C51EE92E74141200E2BA7E /* XCRemoteSwiftPackageReference "SVGKit" */,
-				D439A64C2E833720001D193A /* XCRemoteSwiftPackageReference "NotificationToast" */,
 				D418E4292E87248A00959434 /* XCRemoteSwiftPackageReference "SPConfetti" */,
 				D4CEC4AB2E951072000E0D1E /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 				D4CEC4AE2E9510B8000E0D1E /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */,
@@ -410,28 +402,12 @@
 				minimumVersion = 1.4.2;
 			};
 		};
-		D439A64C2E833720001D193A /* XCRemoteSwiftPackageReference "NotificationToast" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/PhilippeWeidmann/NotificationToast";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.0;
-			};
-		};
 		D4C51D212E71CAE400E2BA7E /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.7.1;
-			};
-		};
-		D4C51E7F2E72047200E2BA7E /* XCRemoteSwiftPackageReference "SwiftySound" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/adamcichy/SwiftySound.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.0;
 			};
 		};
 		D4C51EAC2E72F29C00E2BA7E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
@@ -490,20 +466,10 @@
 			package = D418E4292E87248A00959434 /* XCRemoteSwiftPackageReference "SPConfetti" */;
 			productName = SPConfetti;
 		};
-		D439A64D2E833720001D193A /* NotificationToast */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D439A64C2E833720001D193A /* XCRemoteSwiftPackageReference "NotificationToast" */;
-			productName = NotificationToast;
-		};
 		D4C51D222E71CAE400E2BA7E /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D4C51D212E71CAE400E2BA7E /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		D4C51E802E72047200E2BA7E /* SwiftySound */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D4C51E7F2E72047200E2BA7E /* XCRemoteSwiftPackageReference "SwiftySound" */;
-			productName = SwiftySound;
 		};
 		D4C51EAD2E72F29C00E2BA7E /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;

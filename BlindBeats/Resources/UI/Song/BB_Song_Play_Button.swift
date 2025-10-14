@@ -92,13 +92,13 @@ public class BB_Song_Play_Button : UIButton {
 			
 			if let song = self?.song {
 				
-				if BB_Audio.shared.isPlayingPreview(for: song) {
+				if BB_Sound.shared.isPlayingPreview(for: song) {
 					
-					BB_Audio.shared.stopPreview()
+					BB_Sound.shared.stopPreview()
 				}
 				else {
 					
-					BB_Audio.shared.playPreview(for: song)
+					BB_Sound.shared.playPreview(song)
 				}
 			}
 			
@@ -106,12 +106,12 @@ public class BB_Song_Play_Button : UIButton {
 		
 		NotificationCenter.add(.updateSongStatus) { [weak self] _ in
 			
-			self?.isPlaying = BB_Audio.shared.isPlayingPreview(for: self?.song)
+			self?.isPlaying = BB_Sound.shared.isPlayingPreview(for: self?.song)
 		}
 		
 		NotificationCenter.add(.updateSongProgress) { [weak self] notification in
 			
-			if let progress = notification.userInfo?["progress"] as? Float, self?.isPlaying ?? false, BB_Audio.shared.isPlayingPreview(for: self?.song) {
+			if let progress = notification.userInfo?["progress"] as? Float, self?.isPlaying ?? false, BB_Sound.shared.isPlayingPreview(for: self?.song) {
 				
 				CATransaction.begin()
 				CATransaction.setDisableActions(true)
@@ -124,7 +124,7 @@ public class BB_Song_Play_Button : UIButton {
 	private func updateButtonState() {
 		
 		isEnabled = song?.previewUrl != nil
-		isPlaying = BB_Audio.shared.isPlayingPreview(for: song)
+		isPlaying = BB_Sound.shared.isPlayingPreview(for: song)
 	}
 	
 	private func updatePlayButtonState() {

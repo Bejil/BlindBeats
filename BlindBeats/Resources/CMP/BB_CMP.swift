@@ -24,11 +24,15 @@ public class BB_CMP {
 			
 			ConsentForm.load { form, error in
 				
-				print("#### \(error)")
-				
 				if ConsentInformation.shared.consentStatus == .required {
 					
-					form?.present(from: UI.MainController)
+					form?.present(from: UI.MainController) { _ in
+							
+						DispatchQueue.main.async {
+							
+							completion?()
+						}
+					}
 				}
 				else if ConsentInformation.shared.consentStatus == .obtained {
 					

@@ -12,8 +12,15 @@ public class BB_Firebase {
 	
 	public enum RemoteConfigKeys:String {
 		
-		case DiamondsUserDefault = "diamondsUserDefault"
-		case DiamondsGameSolo = "diamondsGameSolo"
+		case DiamondsUserDefault = "DiamondsUserDefault"
+		case DiamondsGameSolo = "DiamondsGameSolo"
+		case DiamondsPerDay = "DiamondsPerDay"
+		case PlaylistsMaxSongsCount = "PlaylistsMaxSongsCount"
+		case PointsArtist = "PointsArtist"
+		case PointsCompletedFactor = "PointsCompletedFactor"
+		case PointsHelp = "PointsHelp"
+		case PointsPerfect = "PointsPerfect"
+		case PointsTitle = "PointsTitle"
 	}
 	
 	public static let shared:BB_Firebase = .init()
@@ -24,16 +31,24 @@ public class BB_Firebase {
 		FirebaseApp.configure()
 	}
 	
-	public func prepareRemoteConfig(_ completion:(()->Void)?) {
+	public func prepareRemoteConfig(_ completion:((Error?)->Void)?) {
 		
 		let settings = RemoteConfigSettings()
 		settings.minimumFetchInterval = 0
 		remoteConfig.configSettings = settings
 		remoteConfig.setDefaults([RemoteConfigKeys.DiamondsUserDefault.rawValue:5 as NSObject])
 		remoteConfig.setDefaults([RemoteConfigKeys.DiamondsGameSolo.rawValue:1 as NSObject])
-		remoteConfig.fetchAndActivate(completionHandler: { _, _ in
+		remoteConfig.setDefaults([RemoteConfigKeys.DiamondsPerDay.rawValue:1 as NSObject])
+		remoteConfig.setDefaults([RemoteConfigKeys.PlaylistsMaxSongsCount.rawValue:10 as NSObject])
+		remoteConfig.setDefaults([RemoteConfigKeys.PointsCompletedFactor.rawValue:10 as NSObject])
+		remoteConfig.setDefaults([RemoteConfigKeys.PointsPerfect.rawValue:150 as NSObject])
+		remoteConfig.setDefaults([RemoteConfigKeys.PointsArtist.rawValue:60 as NSObject])
+		remoteConfig.setDefaults([RemoteConfigKeys.PointsTitle.rawValue:60 as NSObject])
+		remoteConfig.setDefaults([RemoteConfigKeys.PointsHelp.rawValue:50 as NSObject])
+		
+		remoteConfig.fetchAndActivate(completionHandler: { _, error in
 			
-			completion?()
+			completion?(error)
 		})
 	}
 	

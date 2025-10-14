@@ -50,7 +50,8 @@ extension BB_Song {
 			
 			do {
 				
-				let request = MusicCatalogSearchRequest(term: query ?? "", types: [Song.self])
+				var request = MusicCatalogSearchRequest(term: query ?? "", types: [Song.self])
+				request.limit = 25
 				let response = try await request.response()
 				
 				await MainActor.run {
@@ -88,21 +89,37 @@ extension BB_Song {
 		
 		let result:BB_Song.Guess = .init()
 		
+		// Score de similarité directe pour titre et artiste séparément
 		let titleScore = guess?.similarityScore(to: title) ?? 0.0
-		
 		let artistScore = guess?.similarityScore(to: artist) ?? 0.0
 		
-		let fullTitle1 = "\(artist ?? "") \(title ?? "")"
-		let fullScore1 = guess?.similarityScore(to: fullTitle1) ?? 0.0
+		// Score de contenu (guess contenu dans le résultat) pour titre et artiste séparément
+		let titleContainsScore = guess?.containsScore(in: title) ?? 0.0
+		let artistContainsScore = guess?.containsScore(in: artist) ?? 0.0
 		
-		let fullTitle2 = "\(title ?? "") \(artist ?? "")"
-		let fullScore2 = guess?.similarityScore(to: fullTitle2) ?? 0.0
+		// Score phonétique amélioré pour titre et artiste séparément
+		let titlePhoneticScore = guess?.phoneticSimilarityScore(to: title) ?? 0.0
+		let artistPhoneticScore = guess?.phoneticSimilarityScore(to: artist) ?? 0.0
+		
+		// Calcul du score final pour le titre (uniquement basé sur le titre)
+		let titleFinalScore = max(
+			titleScore,
+			titleContainsScore,
+			titlePhoneticScore
+		)
+		
+		// Calcul du score final pour l'artiste (uniquement basé sur l'artiste)
+		let artistFinalScore = max(
+			artistScore,
+			artistContainsScore,
+			artistPhoneticScore
+		)
 		
 		result.title = .init()
-		result.title?.score = max(titleScore, fullScore1, fullScore2)
+		result.title?.score = titleFinalScore
 		
 		result.artist = .init()
-		result.artist?.score = max(artistScore, fullScore1, fullScore2)
+		result.artist?.score = artistFinalScore
 		
 		return result
 	}

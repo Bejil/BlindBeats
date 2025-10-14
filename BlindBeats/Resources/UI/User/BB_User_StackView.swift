@@ -80,7 +80,7 @@ public class BB_User_StackView : UIStackView {
 		button.addAction(.init(handler: { _ in
 			
 			UIApplication.feedBack(.On)
-			BB_Audio.shared.play(.button)
+			BB_Sound.shared.playSound(.Button)
 			
 			let alertViewController:BB_User_Infos_Alert_ViewController = .init()
 			alertViewController.user = BB_User.current

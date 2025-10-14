@@ -130,4 +130,83 @@ extension String {
 		
 		return 0.0
 	}
+	
+	// MARK: - Score de contenu (guess contenu dans le résultat)
+	public func containsScore(in target: String?) -> Double {
+		
+		guard let target = target else { return 0.0 }
+		
+		let normalizedGuess = self.normalized()
+		let normalizedTarget = target.normalized()
+		
+		guard !normalizedGuess.isEmpty, !normalizedTarget.isEmpty else { return 0.0 }
+		
+		// Vérification directe de contenu
+		if normalizedTarget.contains(normalizedGuess) {
+			let coverage = Double(normalizedGuess.count) / Double(normalizedTarget.count)
+			return min(0.95, 0.7 + (coverage * 0.25)) // Score entre 0.7 et 0.95
+		}
+		
+		// Vérification par mots
+		let guessWords = normalizedGuess.components(separatedBy: .whitespacesAndNewlines).filter { !$0.isEmpty }
+		let targetWords = normalizedTarget.components(separatedBy: .whitespacesAndNewlines).filter { !$0.isEmpty }
+		
+		guard !guessWords.isEmpty, !targetWords.isEmpty else { return 0.0 }
+		
+		var matchedWords = 0
+		for guessWord in guessWords {
+			for targetWord in targetWords {
+				if targetWord.contains(guessWord) || guessWord.contains(targetWord) {
+					matchedWords += 1
+					break
+				}
+			}
+		}
+		
+		let wordMatchRatio = Double(matchedWords) / Double(guessWords.count)
+		return wordMatchRatio >= 0.8 ? 0.85 : wordMatchRatio * 0.7
+	}
+	
+	// MARK: - Score de similarité phonétique amélioré
+	public func phoneticSimilarityScore(to other: String?) -> Double {
+		
+		guard let other = other else { return 0.0 }
+		
+		let normalizedGuess = self.normalized()
+		let normalizedOther = other.normalized()
+		
+		guard !normalizedGuess.isEmpty, !normalizedOther.isEmpty else { return 0.0 }
+		
+		// Clés phonétiques
+		let phoneticGuess = normalizedGuess.phoneticKey()
+		let phoneticOther = normalizedOther.phoneticKey()
+		
+		// Score phonétique direct
+		let phoneticDistance = phoneticGuess.levenshteinDistance(to: phoneticOther)
+		let maxPhoneticLength = max(phoneticGuess.count, phoneticOther.count)
+		let phoneticScore = 1.0 - (Double(phoneticDistance) / Double(maxPhoneticLength))
+		
+		// Score de contenu phonétique
+		let phoneticContainsScore = phoneticGuess.containsScore(in: phoneticOther)
+		
+		// Score par mots phonétiques
+		let guessPhoneticWords = phoneticGuess.components(separatedBy: .whitespacesAndNewlines).filter { !$0.isEmpty }
+		let otherPhoneticWords = phoneticOther.components(separatedBy: .whitespacesAndNewlines).filter { !$0.isEmpty }
+		
+		var phoneticWordMatches = 0
+		for guessWord in guessPhoneticWords {
+			for otherWord in otherPhoneticWords {
+				if otherWord.contains(guessWord) || guessWord.contains(otherWord) {
+					phoneticWordMatches += 1
+					break
+				}
+			}
+		}
+		
+		let phoneticWordScore = !guessPhoneticWords.isEmpty ? 
+			Double(phoneticWordMatches) / Double(guessPhoneticWords.count) : 0.0
+		
+		// Combinaison des scores phonétiques
+		return Swift.max(phoneticScore, phoneticContainsScore, phoneticWordScore)
+	}
 }

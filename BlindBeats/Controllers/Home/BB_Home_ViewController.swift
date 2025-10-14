@@ -47,70 +47,7 @@ public class BB_Home_ViewController: BB_ViewController {
 		playlistsButton.image = UIImage(systemName: "music.note.list")
 		$0.addArrangedSubview(playlistsButton)
 		
-//		let createBlindTestButton: BB_Button = .init(String(key: "menu.rooms.button"), { _ in
-//			
-//			let viewController:BB_Rooms_Create_ViewController = .init()
-//			UI.MainController.present(BB_NavigationController(rootViewController: viewController), animated: true)
-//		})
-//		createBlindTestButton.type = .secondary
-//		createBlindTestButton.image = UIImage(systemName: "plus.circle")
-//		
-//		let joinBlindTestButton: BB_Button = .init(nil, { _ in
-//			
-//			let viewController:BB_Rooms_Join_Scan_ViewController = .init()
-//			viewController.handler = { roomId in
-//
-//				BB_Alert_ViewController.presentLoading { controller in
-//					
-//					BB_Room.get(roomId) { error, room in
-//						
-//						if let error {
-//							
-//							controller?.close {
-//								
-//								BB_Alert_ViewController.present(error)
-//							}
-//						}
-//						else if let room, let user = BB_User.current {
-//							
-//							room.players.append(user)
-//							room.save { error in
-//								
-//								controller?.close {
-//									
-//									if let error {
-//										
-//										BB_Alert_ViewController.present(error)
-//									}
-//									else {
-//										
-//										let viewController:BB_Rooms_Join_Wait_ViewController = .init()
-//										viewController.room = room
-//										UI.MainController.present(BB_NavigationController(rootViewController: viewController), animated: true)
-//									}
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
-//			UI.MainController.present(BB_NavigationController(rootViewController: viewController), animated: true)
-//		})
-//		joinBlindTestButton.type = .secondary
-//		joinBlindTestButton.style = .tinted
-//		joinBlindTestButton.image = UIImage(systemName: "qrcode.viewfinder")
-//		joinBlindTestButton.snp.makeConstraints { make in
-//			
-//			make.width.equalTo(joinBlindTestButton.snp.height)
-//		}
-//		
-//		let blindTestStackView:UIStackView = .init(arrangedSubviews: [createBlindTestButton,joinBlindTestButton])
-//		blindTestStackView.axis = .horizontal
-//		blindTestStackView.spacing = UI.Margins
-//		blindTestStackView.alignment = .center
-//		$0.addArrangedSubview(blindTestStackView)
-		
-		let soloButton: BB_Button = .init(String(key: "menu.solo.button"), { [weak self] _ in
+		let soloButton: BB_Button = .init(String(key: "menu.solo.button"), { [weak self] button in
 			
 			if BB_User.current?.diamonds ?? 0 < BB_Firebase.shared.getRemoteConfig(.DiamondsGameSolo).numberValue.intValue {
 				
@@ -126,7 +63,6 @@ public class BB_Home_ViewController: BB_ViewController {
 				}
 				alertController.addDismissButton()
 				alertController.present()
-				BB_Alert_ViewController.present(BB_Error(String(key: "menu.solo.alert.error.0") + String(key: "user.diamonds") + String(key: "menu.solo.alert.error.1")))
 			}
 			else {
 				
@@ -159,19 +95,28 @@ public class BB_Home_ViewController: BB_ViewController {
 		soloButton.image = UIImage(systemName: "microphone.fill")
 		soloButton.type = .secondary
 		$0.addArrangedSubview(soloButton)
+		$0.setCustomSpacing(3*UI.Margins, after: soloButton)
+		
+		$0.addArrangedSubview(bannerView)
 		
 		return $0
 		
 	}(UIStackView())
+	private lazy var bannerView = BB_Ads.shared.presentBanner(BB_Ads.Identifiers.Banner.Home, self)
 	
 	override public func loadView() {
 		
 		super.loadView()
 		
-		navigationItem.leftBarButtonItem = .init(title: String(key: "menu.shop"), primaryAction: .init(handler: { _ in
+		let shopButton:BB_Button = .init(String(key: "menu.shop")) { _ in
 			
 			UI.MainController.present(BB_NavigationController(rootViewController: BB_Shop_ViewController()), animated: true)
-		}))
+		}
+		shopButton.image = UIImage(systemName: "basket")?.applyingSymbolConfiguration(.init(scale: .medium))
+		shopButton.type = .navigation
+		navigationItem.leftBarButtonItem = .init(customView: shopButton)
+		
+		navigationItem.rightBarButtonItem = .init(customView: BB_Settings_Button())
 		
 		let scrollView:BB_ScrollView = .init()
 		scrollView.clipsToBounds = false
@@ -199,13 +144,21 @@ public class BB_Home_ViewController: BB_ViewController {
 			make.top.equalTo(view.safeAreaLayoutGuide).inset(UI.Margins)
 			make.bottom.equalToSuperview()
 		}
+	}
+	
+	public override func viewWillAppear(_ animated: Bool) {
+		
+		super.viewWillAppear(animated)
 		
 		menuStackView.animate()
+		bannerView.refresh()
 	}
 	
 	public override func viewDidAppear(_ animated: Bool) {
 		
 		super.viewDidAppear(animated)
+		
+		BB_User.checkRewards()
 	}
 }
 

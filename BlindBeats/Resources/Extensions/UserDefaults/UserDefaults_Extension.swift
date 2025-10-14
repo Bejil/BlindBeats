@@ -12,8 +12,11 @@ extension UserDefaults {
 	public enum Keys : String, CaseIterable {
 		
 		case user = "user"
+		case userPreviousLevel = "userPreviousLevel"
 		case shouldDisplayAds = "shouldDisplayAds"
-		case tutorialRoomQrcode = "tutorialRoomQrcode"
+		case soundsEnabled = "soundsEnabled"
+		case musicEnabled = "musicEnabled"
+		case vibrationsEnabled = "vibrationsEnabled"
 	}
 	
 	public static func set(_ value:Any?, _ key:UserDefaults.Keys) {

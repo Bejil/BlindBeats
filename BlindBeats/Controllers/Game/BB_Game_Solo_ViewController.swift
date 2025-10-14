@@ -7,7 +7,6 @@
 
 import SnapKit
 import UIKit
-import NotificationToast
 
 public class BB_Game_Solo_ViewController : BB_ViewController {
 	
@@ -135,20 +134,20 @@ public class BB_Game_Solo_ViewController : BB_ViewController {
 		$0.layer.cornerRadius = (4*UI.Margins)/2
 		$0.addGestureRecognizer(UITapGestureRecognizer(block: { [weak self] _ in
 			
-			BB_Audio.shared.pausePreview()
+			BB_Sound.shared.pausePreview()
 			
 			let alertController:BB_Alert_ViewController = .init()
 			alertController.title = String(key: "game.solo.help.alert.title")
-			alertController.add(String(key: "game.solo.help.alert.content") + "\(Points.Help)" + String(key: "game.solo.points.count"))
+			alertController.add(String(key: "game.solo.help.alert.content") + "\(BB_Firebase.shared.getRemoteConfig(.PointsHelp).numberValue.intValue)" + String(key: "game.solo.points.count"))
 			
 			if self?.guess.artist?.diagnosis != .perfect {
 				
 				let button = alertController.addDismissButton() { [weak self] _ in
 					
-					BB_Audio.shared.resumePreview()
+					BB_Sound.shared.resumePreview()
 					
-					self?.currentPoints -= Points.Help
-					self?.totalPoints -= Points.Help
+					self?.currentPoints -= BB_Firebase.shared.getRemoteConfig(.PointsHelp).numberValue.intValue
+					self?.totalPoints -= BB_Firebase.shared.getRemoteConfig(.PointsHelp).numberValue.intValue
 					self?.updateHelpButton()
 					
 					self?.guess.artist = .init()
@@ -167,10 +166,10 @@ public class BB_Game_Solo_ViewController : BB_ViewController {
 				
 				let button = alertController.addDismissButton() { [weak self] _ in
 					
-					BB_Audio.shared.resumePreview()
+					BB_Sound.shared.resumePreview()
 					
-					self?.currentPoints -= Points.Help
-					self?.totalPoints -= Points.Help
+					self?.currentPoints -= BB_Firebase.shared.getRemoteConfig(.PointsHelp).numberValue.intValue
+					self?.totalPoints -= BB_Firebase.shared.getRemoteConfig(.PointsHelp).numberValue.intValue
 					self?.updateHelpButton()
 					
 					self?.guess.title = .init()
@@ -320,6 +319,13 @@ public class BB_Game_Solo_ViewController : BB_ViewController {
 		}
 	}
 	
+	public override func viewWillAppear(_ animated: Bool) {
+		
+		super.viewWillAppear(animated)
+		
+		BB_Sound.shared.stopMusic()
+	}
+	
 	public override func viewDidLayoutSubviews() {
 		
 		super.viewDidLayoutSubviews()
@@ -351,22 +357,22 @@ public class BB_Game_Solo_ViewController : BB_ViewController {
 				.init(title: String(key: "game.solo.tutorial.0"), timeInterval: 2.0, closure: {
 					
 					UIApplication.feedBack(.On)
-					BB_Audio.shared.play(.button)
+					BB_Sound.shared.playSound(.Button)
 				}),
 				.init(title: String(key: "game.solo.tutorial.1"), timeInterval: 1.0, closure: {
 					
 					UIApplication.feedBack(.On)
-					BB_Audio.shared.play(.button)
+					BB_Sound.shared.playSound(.Button)
 				}),
 				.init(title: String(key: "game.solo.tutorial.2"), timeInterval: 1.0, closure: {
 					
 					UIApplication.feedBack(.On)
-					BB_Audio.shared.play(.button)
+					BB_Sound.shared.playSound(.Button)
 				}),
 				.init(title: String(key: "game.solo.tutorial.3"), timeInterval: 1.0, closure: {
 					
 					UIApplication.feedBack(.Success)
-					BB_Audio.shared.play(.tap)
+					BB_Sound.shared.playSound(.Tap)
 				})
 			]
 		}
@@ -403,7 +409,7 @@ public class BB_Game_Solo_ViewController : BB_ViewController {
 				
 				self?.songStackView.song = currentSong
 				
-				BB_Audio.shared.playPreview(for: currentSong) { [weak self] in
+				BB_Sound.shared.playPreview(currentSong) { [weak self] in
 					
 					self?.stop()
 				}
@@ -446,31 +452,33 @@ public class BB_Game_Solo_ViewController : BB_ViewController {
 			BB_Alert_ViewController.presentLoading { [weak self] controller in
 				
 				let user:BB_User = .current ?? .init()
+				user.attemps += 1
 				user.diamonds -= BB_Firebase.shared.getRemoteConfig(.DiamondsGameSolo).numberValue.intValue
+				user.lastGameDate = Date()
 				user.save { error in
 					
-					controller?.close {
+					if let error {
 						
-						if let error {
+						controller?.close {
 							
 							BB_Alert_ViewController.present(error)
 						}
-						else {
+					}
+					else {
+						
+						self?.playlist?.attemps += 1
+						self?.playlist?.save { error in
 							
-							BB_Alert_ViewController.presentLoading { [weak self] controller in
+							controller?.close {
 								
-								self?.playlist?.attemps += 1
-								self?.playlist?.save { error in
+								if let error {
 									
-									controller?.close {
-										
-										if let error {
-											
-											BB_Alert_ViewController.present(error)
-										}
-										
-										closure()
-									}
+									BB_Alert_ViewController.present(error)
+								}
+								
+								BB_Ads.shared.presentInterstitial(BB_Ads.Identifiers.FullScreen.Game.Solo.Start, nil) {
+									
+									closure()
 								}
 							}
 						}
@@ -492,7 +500,7 @@ public class BB_Game_Solo_ViewController : BB_ViewController {
 			
 			BB_Speech.shared.stop()
 			
-			BB_Audio.shared.stopPreview()
+			BB_Sound.shared.stopPreview()
 			
 			songStackView.coverImageView.removeBlur()
 			songStackView.artistLabel.removeBlur()
@@ -511,14 +519,14 @@ public class BB_Game_Solo_ViewController : BB_ViewController {
 			if guess.diagnosis == .perfect {
 				
 				UIApplication.feedBack(.Success)
-				BB_Audio.shared.play(.success)
+				BB_Sound.shared.playSound(.Success)
 				
 				BB_Confettis.start()
 			}
 			else {
 				
 				UIApplication.feedBack(.Error)
-				BB_Audio.shared.play(.error)
+				BB_Sound.shared.playSound(.Error)
 			}
 			
 			UIApplication.wait(2.0) { [weak self] in
@@ -641,20 +649,10 @@ public class BB_Game_Solo_ViewController : BB_ViewController {
 				
 				if let uuid = playlist?.uuid {
 					
-					let factor = BB_User.current?.completedPlaylists.contains(uuid) ?? true ? Points.CompletedFactor : 10
-					currentPoints += Points.Perfect / factor
-					totalPoints += Points.Perfect / factor
+					let factor = BB_User.current?.completedPlaylists.contains(uuid) ?? true ? BB_Firebase.shared.getRemoteConfig(.PointsCompletedFactor).numberValue.intValue : 1
+					currentPoints += BB_Firebase.shared.getRemoteConfig(.PointsPerfect).numberValue.intValue / factor
+					totalPoints += BB_Firebase.shared.getRemoteConfig(.PointsPerfect).numberValue.intValue / factor
 				}
-				
-				let toast = ToastView(
-					title: String(key: "game.solo.guess.perfect.toast.title"),
-					titleFont: Fonts.Content.Title.H4,
-					subtitle: String(key: "game.solo.guess.perfect.toast.content"),
-					subtitleFont: Fonts.Content.Text.Regular,
-					position: .top
-				)
-				toast.displayTime = 3.0
-				toast.show()
 				
 				stop()
 				
@@ -668,20 +666,16 @@ public class BB_Game_Solo_ViewController : BB_ViewController {
 					
 					if let uuid = playlist?.uuid {
 						
-						let factor = BB_User.current?.completedPlaylists.contains(uuid) ?? true ? Points.CompletedFactor : 1
-						currentPoints += Points.Artist / factor
-						totalPoints += Points.Artist / factor
+						let factor = BB_User.current?.completedPlaylists.contains(uuid) ?? true ? BB_Firebase.shared.getRemoteConfig(.PointsCompletedFactor).numberValue.intValue : 1
+						currentPoints += BB_Firebase.shared.getRemoteConfig(.PointsArtist).numberValue.intValue / factor
+						totalPoints += BB_Firebase.shared.getRemoteConfig(.PointsArtist).numberValue.intValue / factor
 					}
 					
-					let toast = ToastView(
-						title: String(key: "game.solo.guess.artist.toast.title"),
-						titleFont: Fonts.Content.Title.H4,
-						subtitle: String(key: "game.solo.guess.artist.toast.content"),
-						subtitleFont: Fonts.Content.Text.Regular,
-						position: .top
-					)
-					toast.displayTime = 3.0
-					toast.show()
+					let toastStackView:BB_Toast_StackView = .init()
+					toastStackView.style = .Success
+					toastStackView.title = String(key: "game.solo.guess.artist.toast.title")
+					toastStackView.subtitle = String(key: "game.solo.guess.artist.toast.content")
+					toastStackView.present(in: view, position: .Top, from: .Left, to: .Right)
 				}
 				else if titleDiagnosis == .perfect && guess.title?.diagnosis != .perfect {
 					
@@ -691,32 +685,24 @@ public class BB_Game_Solo_ViewController : BB_ViewController {
 					
 					if let uuid = playlist?.uuid {
 						
-						let factor = BB_User.current?.completedPlaylists.contains(uuid) ?? true ? Points.CompletedFactor : 1
-						currentPoints += Points.Title / factor
-						totalPoints += Points.Title / factor
+						let factor = BB_User.current?.completedPlaylists.contains(uuid) ?? true ? BB_Firebase.shared.getRemoteConfig(.PointsCompletedFactor).numberValue.intValue : 1
+						currentPoints += BB_Firebase.shared.getRemoteConfig(.PointsTitle).numberValue.intValue / factor
+						totalPoints += BB_Firebase.shared.getRemoteConfig(.PointsTitle).numberValue.intValue / factor
 					}
 					
-					let toast = ToastView(
-						title: String(key: "game.solo.guess.title.toast.title"),
-						titleFont: Fonts.Content.Title.H4,
-						subtitle: String(key: "game.solo.guess.title.toast.content"),
-						subtitleFont: Fonts.Content.Text.Regular,
-						position: .top
-					)
-					toast.displayTime = 3.0
-					toast.show()
+					let toastStackView:BB_Toast_StackView = .init()
+					toastStackView.style = .Success
+					toastStackView.title = String(key: "game.solo.guess.title.toast.title")
+					toastStackView.subtitle = String(key: "game.solo.guess.title.toast.content")
+					toastStackView.present(in: view, position: .Top, from: .Left, to: .Right)
 				}
 				else {
 					
-					let toast = ToastView(
-						title: String(key: "game.solo.guess.miss.toast.title"),
-						titleFont: Fonts.Content.Title.H4,
-						subtitle: String(key: "game.solo.guess.miss.toast.content"),
-						subtitleFont: Fonts.Content.Text.Regular,
-						position: .top
-					)
-					toast.displayTime = 3.0
-					toast.show()
+					let toastStackView:BB_Toast_StackView = .init()
+					toastStackView.style = .Failure
+					toastStackView.title = String(key: "game.solo.guess.miss.toast.title")
+					toastStackView.subtitle = String(key: "game.solo.guess.miss.toast.content")
+					toastStackView.present(in: view, position: .Top, from: .Left, to: .Right)
 				}
 				
 				if guess.diagnosis == .perfect {
@@ -729,41 +715,37 @@ public class BB_Game_Solo_ViewController : BB_ViewController {
 	
 	private func updateUser(_ completion:(()->Void)?) {
 		
-		if totalPoints > 0 {
+		BB_Alert_ViewController.presentLoading { [weak self] controller in
 			
-			BB_Alert_ViewController.presentLoading { [weak self] controller in
+			let user:BB_User = .current ?? .init()
+			
+			UserDefaults.set(user.level, .userPreviousLevel)
+			
+			if let playlist = self?.playlist {
 				
-				let user:BB_User = .current ?? .init()
+				user.completedPlaylists.append(playlist.uuid)
+			}
+			
+			user.success += 1
+			user.points += self?.totalPoints ?? 0
+			user.save { [weak self] error in
 				
-				if let playlist = self?.playlist {
+				controller?.close { [weak self] in
 					
-					user.completedPlaylists.append(playlist.uuid)
-				}
-				
-				user.points += self?.totalPoints ?? 0
-				user.save { [weak self] error in
-					
-					controller?.close { [weak self] in
+					if let error {
 						
-						if let error {
+						BB_Alert_ViewController.present(error) { [weak self] in
 							
-							BB_Alert_ViewController.present(error) { [weak self] in
-								
-								self?.updateUser(completion)
-							}
+							self?.updateUser(completion)
 						}
-						else {
-							
-							NotificationCenter.post(.updateUser)
-							completion?()
-						}
+					}
+					else {
+						
+						NotificationCenter.post(.updateUser)
+						completion?()
 					}
 				}
 			}
-		}
-		else {
-			
-			completion?()
 		}
 	}
 	
@@ -784,41 +766,70 @@ public class BB_Game_Solo_ViewController : BB_ViewController {
 	
 	public override func close() {
 		
-		BB_Audio.shared.pausePreview()
+		BB_Sound.shared.pausePreview()
 		
 		let alertController:BB_Alert_ViewController = .init()
 		alertController.backgroundView.isUserInteractionEnabled = false
 		alertController.title = String(key: "game.solo.close.alert.title")
 		alertController.add(String(key: "game.solo.close.alert.content"))
-		alertController.addDismissButton() { [weak self] _ in
+		
+		let button = alertController.addButton(title: String(key: "game.solo.close.alert.button")) { [weak self] button in
 			
-			BB_Alert_ViewController.presentLoading { [weak self] controller in
+			button?.isLoading = true
+			
+			let user:BB_User = .current ?? .init()
+			user.failures += 1
+			user.save { [weak self] error in
 				
-				self?.playlist?.failures += 1
-				self?.playlist?.save { [weak self] error in
+				if let error {
 					
-					controller?.close { [weak self] in
+					alertController.close {
 						
-						if let error {
-							
-							BB_Alert_ViewController.present(error)
-						}
-						else {
-							
-							BB_Audio.shared.stopPreview()
-							
-							self?.dismiss()
-						}
+						BB_Alert_ViewController.present(error)
 					}
+				}
+				else {
 					
+					self?.playlist?.failures += 1
+					self?.playlist?.save { [weak self] error in
+						
+						alertController.close { [weak self] in
+							
+							if let error {
+								
+								BB_Alert_ViewController.present(error)
+							}
+							else {
+								
+								BB_Sound.shared.stopPreview()
+								
+								self?.dismiss()
+							}
+						}
+						
+					}
 				}
 			}
 		}
+		button.type = .delete
 		alertController.addCancelButton() { _ in
 			
-			BB_Audio.shared.resumePreview()
+			BB_Sound.shared.resumePreview()
 		}
 		alertController.present()
+	}
+	
+	public override func dismiss(_ completion: (() -> Void)? = nil) {
+		
+		super.dismiss({
+			
+			completion?()
+			
+			BB_Ads.shared.presentInterstitial(BB_Ads.Identifiers.FullScreen.Game.Solo.End, nil, {
+				
+				BB_Sound.shared.playMusic()
+			})
+		})
 	}
 }
 

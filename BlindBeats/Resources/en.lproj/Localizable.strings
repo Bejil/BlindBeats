@@ -31,7 +31,6 @@
 "menu.title.1" = "Beats";
 "menu.subtitle" = "Prépare-toi à défier tes amis : trouve le titre, reconnais l’artiste et prouve que tu es le maître du blind test";
 "menu.playlists.button" = "Playlists";
-"menu.rooms.button" = "Nouvelle partie";
 "menu.solo.button" = "Partie solo";
 "menu.solo.alert.title" = "Attention";
 "menu.solo.alert.error.0" = "Vous devez disposez d'au moins 1 ";
@@ -50,8 +49,18 @@
 "user.name.alert.error" = "Ce pseudo est déjà utilisé par un autre joueur";
 "user.infos.level" = "Niveau ";
 "user.infos.points" = " points avant le prochain niveau";
+"user.infos.stats" = "Statistiques";
+"user.infos.stats.attempts" = "Tentatives: ";
+"user.infos.stats.success" = "Réussites: ";
+"user.infos.stats.failures" = "Échecs: ";
+"user.infos.stats.successRate" = "Taux de réussite: ";
 "user.infos.name.button" = "Modifier votre pseudo";
 "user.diamonds" = "💎";
+"user.rewards.alert.title" = "Félicitations !";
+"user.rewards.alert.content" = "Récupérez les récompenses de votre activité";
+"user.rewards.connexion.alert.button" = "Connexion quotidienne";
+"user.rewards.game.alert.button" = "Partie quotidienne";
+"user.rewards.levelup.alert.button" = "Niveau supérieur";
 
 //MARK: - Playlists
 "playlists.title" = "Playlists";
@@ -68,75 +77,67 @@
 "playlists.edit.textField.placeholder" = "Rechercher un morceau ou un artiste...";
 "playlists.edit.selectedSongs" = "Morceaux sélectionnés";
 "playlists.edit.max" = "Vous devez enlever une chanson de votre sélection pour ajouter une nouvelle";
-"playlists.edit.save.button" = "Ok";
+"playlists.edit.save.button" = "Sauvegarder";
 "playlists.edit.empty.error" = "Vous ne pouvez pas enregistrer une playlist vide";
 "playlists.edit.title.alert.title" = "Nom de cette playlist";
 "playlists.edit.title.alert.label" = "Donner un nom à cette playlist pour la retrouver plus facilement";
-"playlists.edit.title.alert.placeholder" = "Nom de la playlist";
+"playlists.edit.title.alert.placeholder.0" = "Nom de la playlist";
+"playlists.edit.title.alert.placeholder.1" = "Ma playlist ";
+"playlists.edit.title.alert.placeholder.2" = "Mix ";
 "playlists.edit.title.alert.button" = "Ok";
 "playlists.edit.create.title" = "Nouvelle playlist";
 "playlists.edit.update.title" = "Modifier la playlist";
+"playlists.edit.songs.title" = "Morceaux";
+"playlists.edit.songs.delete.alert.title" = "Supprimer";
+"playlists.edit.songs.delete.alert.content" = "Voulez-vous vraiment supprimer cette chanson ?";
+"playlists.edit.songs.delete.alert.button" = "Supprimer";
 "playlists.difficulty.veryEasy" = "Très facile";
 "playlists.difficulty.easy" = "Facile";
 "playlists.difficulty.medium" = "Moyenne";
 "playlists.difficulty.hard" = "Difficile";
 "playlists.difficulty.veryHard" = "Très difficile";
 "playlists.difficulty.unknown" = "À juger";
+"playlists.songs" = "chansons";
 "playlists.select.segmentedControl.0" = "Par nom";
 "playlists.select.segmentedControl.1" = "Par joueur";
 "playlists.select.placeholder.0" = "Rechercher un titre";
 "playlists.select.placeholder.1" = "Rechercher un joueur";
 "playlists.select.section.0" = "Nouvelles playlists";
 "playlists.select.section.1" = "Déjà faites";
+"playlists.auth.error" = "Vous devez autoriser l'accès à Apple Music dans vos règlages";
+"playlists.stats.statistics" = "Statistiques";
+"playlists.stats.attempts" = "Tentatives: ";
+"playlists.stats.success" = "Réussites: ";
+"playlists.stats.failures" = "Échecs: ";
+"playlists.stats.successRate" = "Taux de réussite: ";
 
 //MARK: - Game
 "game.solo.title" = "Chanson ";
 "game.solo.tutorial.0" = "Pret ?";
-"game.solo.tutorial.1" = "1";
+"game.solo.tutorial.1" = "3";
 "game.solo.tutorial.2" = "2";
-"game.solo.tutorial.3" = "3";
+"game.solo.tutorial.3" = "1";
 "game.solo.tutorial.4" = "C'est parti !";
 "game.solo.guess.placeholder" = "Votre proposition";
 "game.solo.success.alert.title" = "Bravo !!";
 "game.solo.alert.button.0" = "Terminer";
 "game.solo.alert.button.1" = "Chanson suivante";
 "game.solo.failure.alert.title" = "Dommage...";
-"game.solo.guess.perfect.toast.title" = "🎉 Parfait !";
-"game.solo.guess.perfect.toast.content" = "Artiste et titre corrects !";
-"game.solo.guess.artist.toast.title" = "🎯 Super !";
-"game.solo.guess.artist.toast.content" = "Artiste trouvé !";
-"game.solo.guess.title.toast.title" = "🎯 Super !";
-"game.solo.guess.title.toast.content" = "Titre trouvé !";
-"game.solo.guess.miss.toast.title" = "😩 Raté";
+"game.solo.guess.artist.toast.title" = "Super 👍";
+"game.solo.guess.artist.toast.content" = "Vous avez trouvé l'artiste !";
+"game.solo.guess.title.toast.title" = "Super 👍";
+"game.solo.guess.title.toast.content" = "Vous avez trouvé le titre !";
+"game.solo.guess.miss.toast.title" = "Raté 😢";
 "game.solo.guess.miss.toast.content" = "Encore un petit effort...";
 "game.solo.points.label" = "Vous avez gagné";
 "game.solo.points.count" = " points";
 "game.solo.close.alert.title" = "Attention";
 "game.solo.close.alert.content" = "Si vous vous partez maintnant vous perdrez les points acquis pendant la partie";
+"game.solo.close.alert.button" = "Quitter la partie";
 "game.solo.help.alert.title" = "Aide";
 "game.solo.help.alert.content" = "Obtenez un petit coup de main moyennant ";
 "game.solo.help.alert.artist" = "Artiste";
 "game.solo.help.alert.title" = "Titre";
-
-//MARK: - Rooms
-"rooms.create.title" = "Nouvelle partie";
-"rooms.create.playlist.button" = "Sélectionner une playlist";
-"rooms.create.tutorial.0.title" = "Rejoindre la partie";
-"rooms.create.tutorial.0.subtitle" = "Faites scanner ce QRCode aux participants pour rejoindre la partie";
-"rooms.create.tutorial.0.button" = "Ok";
-"rooms.create.start.button" = "Démarrer";
-"rooms.create.toast.add.title" = "Bienvenue !";
-"rooms.create.toast.add.single.message" = " nouveau joueur s'est connecté";
-"rooms.create.toast.add.multiple.message" = " nouveaux joueurs se sont connectés";
-"rooms.create.toast.remove.title" = "Au revoir !";
-"rooms.create.toast.remove.single.message" = " joueur a quitté la partie";
-"rooms.create.toast.remove.multiple.message" = " joueurs ont quitté la partie";
-"rooms.join.title" = "Scannez un QRCode";
-"rooms.wait.title" = "En attente";
-"rooms.wait.canceled.title" = "Attention";
-"rooms.wait.canceled.content" = "La partie a été annulée";
-"rooms.game.slave.canceled.title" = "Attention";
-"rooms.game.slave.canceled.content" = "La partie a été annulée";
 
 //MARK: - InAppPurchase
 "inAppPurchase.purchase.alert.buy.button" = "Premium";
@@ -159,4 +160,16 @@
 "shop.restore.button" = "Restaurer";
 "shop.restore.success.alert.title" = "Félicitations !";
 "shop.restore.success.alert.content" = "Tes achats ont bien été restaurés";
-"shop.restore.error.content" = "Aucun achat restauré";
+"shop.restore.error" = "Aucun achat restauré";
+
+//MARK: - Settings
+"settings.button" = "Réglages";
+"settings.sounds" = "Sons";
+"settings.sounds.on" = "Activés";
+"settings.sounds.off" = "Désactivés";
+"settings.music" = "Musique";
+"settings.music.on" = "Activée";
+"settings.music.off" = "Désactivée";
+"settings.vibrations" = "Vibrations";
+"settings.vibrations.on" = "Activées";
+"settings.vibrations.off" = "Désactivées";

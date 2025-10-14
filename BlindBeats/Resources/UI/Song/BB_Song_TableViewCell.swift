@@ -113,7 +113,7 @@ public class BB_Song_TableViewCell: BB_TableViewCell {
 		
 		NotificationCenter.add(.updateSongStatus, { [weak self] _ in
 				
-			self?.isPlaying = BB_Audio.shared.isPlayingPreview(for: self?.song)
+			self?.isPlaying = BB_Sound.shared.isPlayingPreview(for: self?.song)
 		})
 	}
 	

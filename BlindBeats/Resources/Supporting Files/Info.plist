@@ -6,6 +6,8 @@
 	<string>Votre caméra est utilisée pour scanner un code et rejoindre un BlindTest</string>
 	<key>UIDesignRequiresCompatibility</key>
 	<true/>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>TT Interphases Pro Trial Bold.ttf</string>

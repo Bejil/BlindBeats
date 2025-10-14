@@ -74,7 +74,8 @@ public class BB_Waveform_View: UIView {
     }
     
     private func updateAnimationState() {
-        let isPlaying = BB_Audio.shared.currentlyPlayingSong != nil
+		
+		let isPlaying = BB_Sound.shared.previewIsPlaying
         
         if isPlaying && !isAnimating {
             startAnimation()

@@ -78,6 +78,149 @@ extension BB_User {
 		
 		return max(0, pointsNeeded)
 	}
+	
+	public static func checkRewards() {
+		
+		guard let user = BB_User.current else { return }
+		
+		let currentLevel = UserDefaults.get(.userPreviousLevel) as? Int ?? 1
+		let newLevel = user.level
+		
+		let levelState = currentLevel < newLevel
+		let lastConnectionState = !Calendar.current.isDateInToday(user.lastConnectionDate)
+		var lastGameState:Bool {
+			
+			if let lastGameDate = user.lastGameDate {
+				
+				return Calendar.current.isDateInToday(lastGameDate)
+			}
+			
+			return false
+		}
+		var lastDailyGameRewardState:Bool {
+			
+			if let lastDailyGameRewardDate = user.lastDailyGameRewardDate {
+				
+				return !Calendar.current.isDateInToday(lastDailyGameRewardDate)
+			}
+			
+			return true
+		}
+		
+		if levelState || lastConnectionState || (lastGameState && lastDailyGameRewardState) {
+			
+			let alertController:BB_Alert_ViewController = .init()
+			alertController.backgroundView.isUserInteractionEnabled = false
+			alertController.title = String(key: "user.rewards.alert.title")
+			alertController.add(String(key: "user.rewards.alert.content"))
+			
+			if levelState {
+				
+				var totalDiamonds = 0
+				for level in (currentLevel + 1)...newLevel {
+					
+					totalDiamonds += Int(round(Double(level) * 0.5 + 2))
+				}
+				
+				let button = alertController.addButton(title: String(key: "user.rewards.levelup.alert.button")) { button in
+					
+					button?.isLoading = true
+					
+					let user:BB_User = .current ?? .init()
+					user.diamonds += totalDiamonds
+					user.save { error in
+						
+						button?.isLoading = false
+						
+						if let error {
+							
+							BB_Alert_ViewController.present(error)
+						}
+						else {
+							
+							UserDefaults.set(user.level, .userPreviousLevel)
+							
+							button?.isEnabled = false
+							NotificationCenter.post(.updateUser)
+						}
+					}
+				}
+				button.subtitle = ["\(totalDiamonds)",String(key: "user.diamonds")].joined(separator: " ")
+			}
+			
+			if lastConnectionState {
+				
+				let button = alertController.addButton(title: String(key: "user.rewards.connexion.alert.button")) { button in
+					
+					button?.isLoading = true
+					
+					let user:BB_User = .current ?? .init()
+					user.lastConnectionDate = Date()
+					user.diamonds += BB_Firebase.shared.getRemoteConfig(.DiamondsPerDay).numberValue.intValue
+					user.save { error in
+						
+						button?.isLoading = false
+						
+						if let error {
+							
+							BB_Alert_ViewController.present(error)
+						}
+						else {
+							
+							button?.isEnabled = false
+							NotificationCenter.post(.updateUser)
+						}
+					}
+				}
+				button.subtitle = ["\(BB_Firebase.shared.getRemoteConfig(.DiamondsPerDay).numberValue.intValue)",String(key: "user.diamonds")].joined(separator: " ")
+			}
+			
+			if lastGameState && lastDailyGameRewardState {
+				
+				let button = alertController.addButton(title: String(key: "user.rewards.game.alert.button")) { button in
+					
+					button?.isLoading = true
+					
+					let user:BB_User = .current ?? .init()
+					user.lastDailyGameRewardDate = .init()
+					user.diamonds += BB_Firebase.shared.getRemoteConfig(.DiamondsGameSolo).numberValue.intValue
+					user.save { error in
+						
+						button?.isLoading = false
+						
+						if let error {
+							
+							BB_Alert_ViewController.present(error)
+						}
+						else {
+							
+							button?.isEnabled = false
+							NotificationCenter.post(.updateUser)
+						}
+					}
+				}
+				button.subtitle = ["\(BB_Firebase.shared.getRemoteConfig(.DiamondsGameSolo).numberValue.intValue)",String(key: "user.diamonds")].joined(separator: " ")
+			}
+			
+			NotificationCenter.add(.updateUser) { _ in
+				
+				if (alertController.contentStackView.arrangedSubviews.filter({ $0 is BB_Button }) as? [BB_Button])?.allSatisfy({ !$0.isEnabled }) ?? true {
+					
+					alertController.close()
+				}
+			}
+			
+			alertController.dismissHandler = {
+				
+				BB_Confettis.stop()
+			}
+			alertController.present() {
+				
+				BB_Confettis.start()
+			}
+		}
+	}
+	
 	private static func pointsRequiredForLevel(_ level: Int) -> Int {
 		
 		guard level > 0 else { return 0 }
@@ -140,20 +283,6 @@ extension BB_User {
 		Firestore.firestore().collection("playlists").whereField("user.uuid", isEqualTo: uuid).getDocuments { snapshot, error in
 			
 			completion?(error,snapshot?.documents.compactMap({ try?$0.data(as: BB_Playlist.self) }))
-		}
-	}
-	
-	public func deleteRooms(_ completion:((Error?)->Void)?) {
-		
-		Firestore.firestore().collection("rooms").whereField("owner.uuid", isEqualTo: uuid).getDocuments { snapshot, error in
-			
-			let rooms = snapshot?.documents.compactMap({ try?$0.data(as: BB_Room.self) })
-			rooms?.forEach({
-				
-				Firestore.firestore().collection("rooms").document($0.uuid).delete()
-			})
-			
-			completion?(error)
 		}
 	}
 	
