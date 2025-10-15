@@ -55,6 +55,11 @@ public class BB_User_StackView : UIStackView {
 	private lazy var backgroundShapeLayer:CAShapeLayer = {
 		
 		$0.fillColor = Colors.Primary.cgColor
+		$0.shadowOffset = .zero
+		$0.shadowRadius = UI.CornerRadius
+		$0.shadowOpacity = 0.25
+		$0.masksToBounds = false
+		$0.shadowColor = UIColor.black.cgColor
 		return $0
 		
 	}(CAShapeLayer())

@@ -32,15 +32,8 @@
 "menu.subtitle" = "Prépare-toi à défier tes amis : trouve le titre, reconnais l’artiste et prouve que tu es le maître du blind test";
 "menu.playlists.button" = "Playlists";
 "menu.solo.button" = "Partie solo";
-"menu.solo.alert.title" = "Attention";
-"menu.solo.alert.error.0" = "Vous devez disposez d'au moins 1 ";
-"menu.solo.alert.error.1" = " pour jouer en solo";
-"menu.solo.alert.button" = "Boutique";
-"menu.solo.alert.title" = "Partie solo";
-"menu.solo.alert.content" = "Une partie ou vous jouez seul contre le temps. Découvrez un maximum de musiques pour gagner un max de points !";
-"menu.solo.alert.button.title" = "Jouer";
-"menu.solo.alert.button.subtitle" = "pour";
 "menu.shop" = "Boutique";
+"menu.ranking" = "Classement";
 
 //MARK: - User
 "user.name.alert.title" = "Profil";
@@ -55,12 +48,22 @@
 "user.infos.stats.failures" = "Échecs: ";
 "user.infos.stats.successRate" = "Taux de réussite: ";
 "user.infos.name.button" = "Modifier votre pseudo";
+"user.infos.playlists.button" = "Playlists";
 "user.diamonds" = "💎";
 "user.rewards.alert.title" = "Félicitations !";
 "user.rewards.alert.content" = "Récupérez les récompenses de votre activité";
 "user.rewards.connexion.alert.button" = "Connexion quotidienne";
 "user.rewards.game.alert.button" = "Partie quotidienne";
 "user.rewards.levelup.alert.button" = "Niveau supérieur";
+"user.game.solo.alert.title" = "Attention";
+"user.game.solo.alert.error.0" = "Vous devez disposez d'au moins 1 ";
+"user.game.solo.alert.error.1" = " pour jouer en solo";
+"user.game.solo.alert.button" = "Boutique";
+"user.game.solo.alert.title" = "Partie solo";
+"user.game.solo.alert.content" = "Une partie ou vous jouez seul contre le temps. Découvrez un maximum de musiques pour gagner un max de points !";
+"user.game.solo.alert.button.title" = "Jouer";
+"user.game.solo.alert.button.subtitle" = "pour";
+
 
 //MARK: - Playlists
 "playlists.title" = "Playlists";
@@ -138,6 +141,9 @@
 "game.solo.help.alert.content" = "Obtenez un petit coup de main moyennant ";
 "game.solo.help.alert.artist" = "Artiste";
 "game.solo.help.alert.title" = "Titre";
+
+//MARK: - Ranking
+"ranking.title" = "Classement";
 
 //MARK: - InAppPurchase
 "inAppPurchase.purchase.alert.buy.button" = "Premium";

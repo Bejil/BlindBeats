@@ -25,15 +25,18 @@ public class BB_Playlists_ViewController : BB_ViewController {
 			
 			let hasPlaylists = playlists?.isEmpty == false
 			
-			navigationItem.rightBarButtonItem = hasPlaylists ? .init(title: String(key: "playlists.edit.button"), primaryAction: .init(handler: { [weak self] _ in
+			if user == BB_User.current {
 				
-				UIApplication.feedBack(.On)
-				BB_Sound.shared.playSound(.Button)
-				
-				let isEditing = self?.tableView.isEditing ?? false
-				self?.tableView.setEditing(!isEditing, animated: true)
-				
-			})) : nil
+				navigationItem.rightBarButtonItem = hasPlaylists ? .init(title: String(key: "playlists.edit.button"), primaryAction: .init(handler: { [weak self] _ in
+					
+					UIApplication.feedBack(.On)
+					BB_Sound.shared.playSound(.Button)
+					
+					let isEditing = self?.tableView.isEditing ?? false
+					self?.tableView.setEditing(!isEditing, animated: true)
+					
+				})) : nil
+			}
 			
 			tableView.dismissPlaceholder()
 			
@@ -187,9 +190,28 @@ extension BB_Playlists_ViewController: UITableViewDataSource, UITableViewDelegat
 		
 		tableView.deselectRow(at: indexPath, animated: true)
 		
-		let viewController:BB_Playlists_Edit_ViewController = .init()
-		viewController.playlist = playlists?[indexPath.row]
-		UI.MainController.present(BB_NavigationController(rootViewController: viewController), animated: true)
+		if user == BB_User.current {
+			
+			let viewController:BB_Playlists_Edit_ViewController = .init()
+			viewController.playlist = playlists?[indexPath.row]
+			UI.MainController.present(BB_NavigationController(rootViewController: viewController), animated: true)
+		}
+		else {
+			
+			BB_User.current?.startGame { [weak self] in
+				
+				self?.dismiss { [weak self] in
+					
+					let viewController:BB_Game_Solo_ViewController = .init()
+					viewController.playlist = self?.playlists?[indexPath.row]
+					
+					let navigationController:BB_NavigationController = .init(rootViewController: viewController)
+					navigationController.navigationBar.prefersLargeTitles = false
+					
+					UI.MainController.present(navigationController, animated: true)
+				}
+			}
+		}
 	}
 	
 	public func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
@@ -198,10 +220,15 @@ extension BB_Playlists_ViewController: UITableViewDataSource, UITableViewDelegat
 			
 			return nil
 			
-		}) { (suggestedActions) -> UIMenu? in
+		}) { [weak self] (suggestedActions) -> UIMenu? in
 			
-			let cell = tableView.cellForRow(at: indexPath) as? BB_Playlist_TableViewCell
-			return cell?.menu
+			if self?.user == BB_User.current {
+				
+				let cell = tableView.cellForRow(at: indexPath) as? BB_Playlist_TableViewCell
+				return cell?.menu
+			}
+			
+			return nil
 		}
 	}
 	
@@ -217,13 +244,23 @@ extension BB_Playlists_ViewController: UITableViewDataSource, UITableViewDelegat
 	
 	public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		
-		let cell = tableView.cellForRow(at: indexPath) as? BB_Playlist_TableViewCell
-		return cell?.leadingSwipeActionsConfiguration
+		if user == BB_User.current {
+			
+			let cell = tableView.cellForRow(at: indexPath) as? BB_Playlist_TableViewCell
+			return cell?.leadingSwipeActionsConfiguration
+		}
+		
+		return nil
 	}
 	
 	public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		
-		let cell = tableView.cellForRow(at: indexPath) as? BB_Playlist_TableViewCell
-		return cell?.trailingSwipeActionsConfiguration
+		if user == BB_User.current {
+			
+			let cell = tableView.cellForRow(at: indexPath) as? BB_Playlist_TableViewCell
+			return cell?.trailingSwipeActionsConfiguration
+		}
+		
+		return nil
 	}
 }

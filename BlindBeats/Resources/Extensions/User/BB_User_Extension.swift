@@ -300,4 +300,47 @@ extension BB_User {
 			completion(isAvailable, nil)
 		}
 	}
+	
+	public static func get(_ completion:((Error?,[BB_User]?)->Void)?) {
+		
+		Firestore.firestore().collection("users").order(by: "points", descending: true).getDocuments { snapshot, error in
+			
+			completion?(error, snapshot?.documents.compactMap({ try?$0.data(as: BB_User.self) }))
+		}
+	}
+	
+	public func startGame(_ completion:(()->Void)?) {
+		
+		if diamonds < BB_Firebase.shared.getRemoteConfig(.DiamondsGameSolo).numberValue.intValue {
+			
+			let alertController:BB_Alert_ViewController = .init()
+			alertController.title = String(key: "user.game.solo.alert.title")
+			alertController.add(String(key: "user.game.solo.alert.error.0") + String(key: "user.diamonds") + String(key: "user.game.solo.alert.error.1"))
+			alertController.addButton(title: String(key: "user.game.solo.alert.button")) { _ in
+				
+				alertController.close {
+					
+					UI.MainController.present(BB_NavigationController(rootViewController: BB_Shop_ViewController()), animated: true)
+				}
+			}
+			alertController.addDismissButton()
+			alertController.present()
+		}
+		else {
+			
+			let alertController:BB_Alert_ViewController = .init()
+			alertController.title = String(key: "user.game.solo.alert.title")
+			alertController.add(String(key: "user.game.solo.alert.content"))
+			let button = alertController.addButton(title: String(key: "user.game.solo.alert.button.title")) { _ in
+				
+				alertController.close {
+					
+					completion?()
+				}
+			}
+			button.subtitle = [String(key: "user.game.solo.alert.button.subtitle"),"\(BB_Firebase.shared.getRemoteConfig(.DiamondsGameSolo).numberValue.intValue)",String(key: "user.diamonds")].joined(separator: " ")
+			alertController.addCancelButton()
+			alertController.present()
+		}
+	}
 }

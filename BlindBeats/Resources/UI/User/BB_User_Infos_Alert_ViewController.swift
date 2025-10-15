@@ -40,7 +40,7 @@ public class BB_User_Infos_Alert_ViewController : BB_Alert_ViewController {
 			
 			successRateLabel.set(font: Fonts.Content.Text.Bold, string: String(key: "user.infos.stats.successRate"))
 			
-			button.isHidden = user != BB_User.current
+			nameButton.isHidden = user != BB_User.current
 		}
 	}
 	private lazy var userImageView:BB_User_ImageView = .init()
@@ -95,7 +95,7 @@ public class BB_User_Infos_Alert_ViewController : BB_Alert_ViewController {
 		return $0
 		
 	}(BB_Label())
-	private lazy var button:BB_Button = .init(String(key: "user.infos.name.button")) { [weak self] _ in
+	private lazy var nameButton:BB_Button = .init(String(key: "user.infos.name.button")) { [weak self] _ in
 		
 		self?.close {
 			
@@ -138,7 +138,7 @@ public class BB_User_Infos_Alert_ViewController : BB_Alert_ViewController {
 		statsStackView.spacing = UI.Margins/2
 		add(statsStackView)
 		
-		add(button)
+		add(nameButton)
 		
 		addDismissButton()
 	}

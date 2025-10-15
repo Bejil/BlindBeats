@@ -11,6 +11,8 @@ public class BB_Home_ViewController: BB_ViewController {
 
 	private lazy var menuStackView:UIStackView = {
 		
+		$0.isLayoutMarginsRelativeArrangement = true
+		$0.layoutMargins = .init(horizontal: 3*UI.Margins, vertical: (2*UI.Margins) + (UI.Margins/2))
 		$0.axis = .vertical
 		$0.spacing = 1.5*UI.Margins
 		
@@ -49,53 +51,34 @@ public class BB_Home_ViewController: BB_ViewController {
 		
 		let soloButton: BB_Button = .init(String(key: "menu.solo.button"), { [weak self] button in
 			
-			if BB_User.current?.diamonds ?? 0 < BB_Firebase.shared.getRemoteConfig(.DiamondsGameSolo).numberValue.intValue {
+			BB_User.current?.startGame { [weak self] in
 				
-				let alertController:BB_Alert_ViewController = .init()
-				alertController.title = String(key: "menu.solo.alert.title")
-				alertController.add(String(key: "menu.solo.alert.error.0") + String(key: "user.diamonds") + String(key: "menu.solo.alert.error.1"))
-				alertController.addButton(title: String(key: "menu.solo.alert.button")) { _ in
+				let viewController:BB_Playlists_Select_ViewController = .init()
+				viewController.selectHandler = { [weak self] playlist in
 					
-					alertController.close {
-						
-						UI.MainController.present(BB_NavigationController(rootViewController: BB_Shop_ViewController()), animated: true)
-					}
-				}
-				alertController.addDismissButton()
-				alertController.present()
-			}
-			else {
-				
-				let alertController:BB_Alert_ViewController = .init()
-				alertController.title = String(key: "menu.solo.alert.title")
-				alertController.add(String(key: "menu.solo.alert.content"))
-				let button = alertController.addButton(title: String(key: "menu.solo.alert.button.title")) { [weak self] _ in
+					let viewController:BB_Game_Solo_ViewController = .init()
+					viewController.playlist = playlist
 					
-					alertController.close { [weak self] in
-						
-						let viewController:BB_Playlists_Select_ViewController = .init()
-						viewController.selectHandler = { [weak self] playlist in
-							
-							let viewController:BB_Game_Solo_ViewController = .init()
-							viewController.playlist = playlist
-							
-							let navigationController:BB_NavigationController = .init(rootViewController: viewController)
-							navigationController.navigationBar.prefersLargeTitles = false
-							
-							UI.MainController.present(navigationController, animated: true)
-						}
-						UI.MainController.present(BB_NavigationController(rootViewController: viewController), animated: true)
-					}
+					let navigationController:BB_NavigationController = .init(rootViewController: viewController)
+					navigationController.navigationBar.prefersLargeTitles = false
+					
+					UI.MainController.present(navigationController, animated: true)
 				}
-				button.subtitle = [String(key: "menu.solo.alert.button.subtitle"),"\(BB_Firebase.shared.getRemoteConfig(.DiamondsGameSolo).numberValue.intValue)",String(key: "user.diamonds")].joined(separator: " ")
-				alertController.addCancelButton()
-				alertController.present()
+				UI.MainController.present(BB_NavigationController(rootViewController: viewController), animated: true)
 			}
 		})
 		soloButton.image = UIImage(systemName: "microphone.fill")
 		soloButton.type = .secondary
 		$0.addArrangedSubview(soloButton)
-		$0.setCustomSpacing(3*UI.Margins, after: soloButton)
+		
+		let rankingButton: BB_Button = .init(String(key: "menu.ranking"), { [weak self] button in
+			
+			UI.MainController.present(BB_NavigationController(rootViewController: BB_Ranking_ViewController()), animated: true)
+		})
+		rankingButton.image = UIImage(systemName: "list.number")
+		rankingButton.type = .tertiary
+		$0.addArrangedSubview(rankingButton)
+		$0.setCustomSpacing(3*UI.Margins, after: rankingButton)
 		
 		$0.addArrangedSubview(bannerView)
 		
@@ -119,7 +102,7 @@ public class BB_Home_ViewController: BB_ViewController {
 		navigationItem.rightBarButtonItem = .init(customView: BB_Settings_Button())
 		
 		let scrollView:BB_ScrollView = .init()
-		scrollView.clipsToBounds = false
+		scrollView.clipsToBounds = true
 		scrollView.showsVerticalScrollIndicator = false
 		scrollView.isCentered = true
 		scrollView.addSubview(menuStackView)
@@ -131,11 +114,9 @@ public class BB_Home_ViewController: BB_ViewController {
 		let contentStackView:UIStackView = .init(arrangedSubviews: [scrollView])
 		contentStackView.spacing = UI.Margins
 		contentStackView.axis = .vertical
-		contentStackView.isLayoutMarginsRelativeArrangement = true
-		contentStackView.layoutMargins = .init(horizontal: 3*UI.Margins)
 		
 		let stackView:UIStackView = .init(arrangedSubviews: [contentStackView,BB_User_StackView()])
-		stackView.spacing = 2*UI.Margins
+		stackView.spacing = -UI.Margins/2
 		stackView.axis = .vertical
 		
 		view.addSubview(stackView)
